@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emotion2 Website</title>
+  <link rel="icon" href="an5.png" type="image/png">
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url('Emotion2Bg.png');
+      background-size: cover; /* 背景图片自动填充页面大小 */
+      background-position: center;
+      position: relative;
+      background-attachment: fixed;
+      z-index: 1;
+      
+    }
+
+    /* 初始时页面模糊 */
+    #content {
+      filter: blur(20px);
+      transition: filter 1.5s ease;
+      min-height: 200vh;
+    }
+
+    /* 中间提示文字的样式 */
+    #overlay-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 7rem;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 5000;
+      cursor: pointer;
+      transition: opacity 1s ease;
+    }
+
+    /* 鼠标悬停时添加虚线边框并放大文字 */
+    .hover-effect {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.3s ease; /* 放大效果 */
+    }
+
+.hover-effect:hover {
+transform: scale(2.2); /* 悬停时放大文字 */
+color:black;
+background-color: rgba(255, 255, 255, 0.5);
+font-family: Courier New;
+font-size:7em;
+font-style:oblique;
+font-weight:800;
+text-align:left;
+letter-spacing:-0.4em;
+text-transform:uppercase;
+text-decoration:wavy underline 0.3em white;
+border-top:.5em  #ffffff00;
+border-bottom:.5em  #00000000;
+border-radius:100%;
+list-style: square outside;
+border-radius:3% 13% 17% 39%;
+}
+
+    /* 添加虚线边框的效果 */
+    .hover-effect::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -10px; /* 控制边框的位置 */
+      width: 0;
+      height: 100%;
+      border-left: 3px dotted white; /* 虚线边框 */
+      opacity: 0;
+      transition: opacity 0.3s ease, width 0.3s ease; /* 悬停时渐入 */
+      
+    }
+
+    .hover-effect:hover::before {
+      width: 10em; /* 边框的宽度 */
+      opacity: 1; /* 使边框可见 */
+      
+    }
+
+    .inverted {
+  filter: invert(100%);
+}
+    
+#an1, #an2, #an3, #an4, #an5, #an6, #an7 {
+  z-index: 5000;
+  animation: moveAn 5s ease-in-out infinite;
+  position: absolute;
+  cursor: grab; /* 拖动时显示手型指针 */
+  opacity: 1; /* 拖动时保持不透明 */
+}
+
+@keyframes moveAn {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-50px); } /* 保持原始动画 */
+}
+
+/* 添加 hovered 类，用于背景变化 */
+
+body.hovered::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('1.png');
+  background-size: 90%, auto;
+  background-position: center 100px;
+  opacity: 0.5; /* 设置 1.png 的透明度为 50% */
+  z-index: -1; /* 使其位于其他元素下方 */
+}
+
+
+#an1 {
+  position: absolute;
+  width: 210px;  /* 设置大小 */
+  top: 20%;      /* 控制垂直位置 */
+  left: 0%;     /* 控制水平位置 */
+  animation-duration: 2s; /* 每个元素有不同的持续时间 */
+}
+
+#an2 {
+  position: absolute;
+  width: 200px;
+  top: 17%;
+  left: 30%;
+  rotate: 30deg;
+  animation-duration: 4s; /* 每个元素有不同的持续时间 */
+}
+
+#an3 {
+  position: absolute;
+  width: 240px;
+  top: 55%;
+  left: 40%;
+  animation-duration: 5.5s; /* 每个元素有不同的持续时间 */
+}
+
+#an4 {
+  position: absolute;
+  width: 260px;
+  top: 30%;
+  left: 53%;
+  animation-duration: 2s; /* 每个元素有不同的持续时间 */
+}
+
+#an5 {
+  position: absolute;
+  width: 200px;
+  top: 50%;
+  left: 80%;
+  animation-duration: 3s; /* 每个元素有不同的持续时间 */
+}
+
+#an6 {
+  position: absolute;
+  width: 170px;
+  top: 30%;
+  left: 15%;
+  rotate: -25deg;
+  animation-duration: 2s; /* 每个元素有不同的持续时间 */
+}
+
+#an7 {
+  position: absolute;
+  width: 190px;
+  top: 20%;
+  left: 85%;
+  rotate: 50deg;
+  animation-duration: 2.5s; /* 每个元素有不同的持续时间 */
+}
+
+
+
+ /* 图片eyes.png的样式 */
+ #eyes {
+      position: fixed;
+      transform: translateX(-50%); /* 确保图片水平居中 */
+      width: 80em; /* 根据需要调整图片的大小 */
+      height: auto; /* 保持图片比例 */
+      left: 55%;
+      z-index: 3; /* 确保图片在背景上层 */
+    }
+    #e-gif {
+  position: fixed;
+  left: 20%;  /* 左侧对齐 */
+  top:20%;
+  bottom: 0;  /* 底部对齐 */
+  scale: 0.9;
+  width: 145px;  /* 设置宽度 */
+  height: 1179px;  /* 设置高度 */
+  opacity: 38%;
+  z-index: 2;  /* 确保它在背景的上层 */
+}
+
+#h-gif {
+  position: fixed;
+  left: 78%;  /* 设置在E.GIF的右边 */
+  top: 25%;  /* 距离页面顶部的位置 */
+  width: 200px;  /* 设置宽度 */
+  height: auto;  /* 设置高度 */
+  opacity: 70%;
+  z-index: 2;  /* 确保它在背景的上层 */
+}
+
+#f-gif {
+  position: fixed;
+  left: 38%;  /* 和H.GIF对齐 */
+  top: 55%;  /* 放在H.GIF的正下方 */
+  width: 270px;  /* 设置宽度 */
+  height: auto;  /* 设置高度 */
+  opacity: 80%;
+  z-index: 2;  /* 确保它在背景的上层 */
+}
+
+#g-gif {
+  position: fixed;
+  left: 38%;  /* 和H.GIF对齐 */
+  bottom: -5%;  /* 放在H.GIF的正下方 */
+  width: 700px;  /* 设置宽度 */
+  height: 100px;  /* 设置高度 */
+  opacity: 80%;
+  z-index: 2;  /* 确保它在背景的上层 */
+}
+
+#f-gif, #g-gif, #h-gif {
+  transform: scale(0); /* 初始时缩小 */
+  opacity: 0; /* 初始时透明 */
+  transition: transform 0.8s ease, opacity 0.8s ease; /* 添加过渡效果 */
+}
+
+#hand1, #hand2, #hand3 {
+  position: absolute;
+  top: 0; /* 将手图片放在页面顶部 */
+  z-index: 5000; /* 确保在其他元素上层 */
+}
+
+#hand1 {
+  top: 7px;
+  left: 3vw; /* 控制hand1的位置 */
+  width: 340px; /* 设置每个手图片的宽度 */
+  height: auto; /* 保持高度按比例调整 */
+  animation: hand1Move 2s ease-in-out infinite;
+}
+
+#hand2 {
+  left: 33vw; /* 控制hand2的位置 */
+  width: 470px; /* 设置每个手图片的宽度 */
+  height: auto; /* 保持高度按比例调整 */
+}
+
+#hand3 {
+  top:35px;
+  left: 75vw; /* 控制hand3的位置 */
+  width: 340px; /* 设置每个手图片的宽度 */
+  height: auto; /* 保持高度按比例调整 */
+  animation: hand3Move 3s ease-in-out infinite;
+}
+
+/* hand1 动画 */
+@keyframes hand1Move {
+  0%, 100% { transform: translateY(0); } /* 初始和结束位置 */
+  50% { transform: translateY(-20px); }  /* 向上移动20px */
+}
+
+/* hand3 动画 */
+@keyframes hand3Move {
+  0%, 100% { transform: translateY(0); } /* 初始和结束位置 */
+  50% { transform: translateY(-30px); }  /* 向上移动30px */
+}
+
+
+
+#A, #A1, #A2 {
+  position: fixed;
+  width: 500px; /* 根据需要调整宽度 */
+  height: auto; /* 保持高度比例 */
+  z-index: 1000; /* 确保它们位于较前面 */
+}
+
+#A {
+  left: -5%; /* 控制A的位置 */
+  top:35%;transform: scaleX(-1); /* 垂直翻转实现x轴对称 */
+}
+
+#A1 {
+  left: 65vw; /* 控制A1的位置 */
+  top:67%;
+  transform: scaleX(-1); /* 垂直翻转实现x轴对称 */
+}
+
+#A2 {
+  left: 76vw; /* 控制A1的位置 */
+  top:85%;
+  width: 350px; /* 根据需要调整宽度 */
+  height: auto; /* 保持高度比例 */
+}
+
+
+/* mouth.gif 完全不透明 */
+#mouth {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  z-index: 2000;
+  width: 100vh;
+  height: auto;
+  opacity: 1; /* mouth.gif 透明度为 100% */
+}
+
+#clue {
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  width: 70vh; /* 设置图片宽度 */
+  z-index: 10000; /* 保持在页面最顶层 */
+  animation: smoothMove 20s infinite alternate ease-in-out;
+}
+
+/* 定义平滑的移动动画 */
+@keyframes smoothMove {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(300px, 200px); }
+  50% { transform: translate(-300px, 400px); }
+  75% { transform: translate(200px, -200px); }
+  100% { transform: translate(0, 0); }
+}
+
+#linkToHomePage {
+  position: fixed;
+  bottom: 0vh; /* 距离底部的距离，单位为 vh */
+  left: 3vw; /* 距离左侧的距离，单位为 vw */
+  width: 15vw; /* 图片的宽度，单位为 vw */
+  height: auto; /* 保持图片的比例 */
+  cursor: pointer; /* 鼠标悬停时显示手型光标 */
+  z-index: 10000; /* 确保图片在最前面 */
+  transition: transform 0.3s ease; /* 悬停时的动画效果 */
+}
+
+#linkToHomePage:hover {
+  transform: scale(1.1); /* 悬停时略微放大 */
+}
+
+
+  </style>
+
+
+
+
+</head>
+<body>
+
+  <div id="overlay-text" class="hover-effect">Don't worry about your anxiety!</div>
+
+  <!-- 页面内容容器，初始时模糊 -->
+  <div id="content">
+
+    <img src="an1.png" alt="an1 Image" id="an1" draggable="true">
+    <img src="an2.png" alt="an2 Image" id="an2" draggable="true">
+    <img src="an3.png" alt="an3 Image" id="an3" draggable="true">
+    <img src="an4.png" alt="an4 Image" id="an4" draggable="true">
+    <img src="an5.png" alt="an5 Image" id="an5" draggable="true">
+    <img src="an6.png" alt="an6 Image" id="an6" draggable="true">
+    <img src="an7.png" alt="an7 Image" id="an7" draggable="true">
+    
+    <img src="mouth.gif" alt="Mouth GIF" id="mouth" style="display: none;">
+    <img src="clue.png" alt="Clue" id="clue" />
+
+
+    <audio id="chewSound" src="chew.mp3"></audio>
+
+
+    
+
+  <img src="eyes.png" alt="Eyes Image" id="eyes"> 
+
+  <img src="E.GIF" alt="E GIF" id="e-gif">
+  <img src="H.GIF" alt="H GIF" id="h-gif">
+  <img src="F.GIF" alt="F GIF" id="f-gif">
+  <img src="G.GIF" alt="G GIF" id="g-gif">
+  
+  <img src="hand1.png" alt="Hand 1" id="hand1">
+<img src="hand2.png" alt="Hand 2" id="hand2">
+<img src="hand3.png" alt="Hand 3" id="hand3">
+
+<img src="A.gif" alt="A GIF" id="A">
+<img src="A1.gif" alt="A1 GIF" id="A1">
+<img src="A2.gif" alt="A2 GIF" id="A2">
+
+<img src="43.png" alt="Link to HomePage" id="linkToHomePage">
+
+
+  
+ 
+
+
+
+  <!-- JavaScript 实现 eye1a 等元素移动 和 mouth 放大效果 -->
+  <script>
+    //进入标题点击消失//
+    const content = document.getElementById('content');
+    const overlayText = document.getElementById('overlay-text');
+
+    overlayText.addEventListener('click', () => {
+     content.style.filter = 'blur(0px)';
+     overlayText.style.opacity = '0';
+     setTimeout(() => {
+        overlayText.style.display = 'none';
+      }, 1000);
+    });
+
+//滚动gif//
+window.addEventListener('scroll', function() {
+  const scrollPosition = window.scrollY; // 当前滚动位置
+  const windowHeight = window.innerHeight; // 视口高度
+  
+  const fGif = document.getElementById('f-gif');
+  const gGif = document.getElementById('g-gif');
+  const hGif = document.getElementById('h-gif');
+
+  // 控制F.GIF
+  if (scrollPosition > windowHeight / 2) {
+    fGif.style.transform = 'scale(1)';
+    fGif.style.opacity = '0.8';
+  } else {
+    fGif.style.transform = 'scale(0)';
+    fGif.style.opacity = '0';
+  }
+
+  // 控制G.GIF
+  if (scrollPosition > windowHeight) {
+    gGif.style.transform = 'scale(1)';
+    gGif.style.opacity = '0.8';
+  } else {
+    gGif.style.transform = 'scale(0)';
+    gGif.style.opacity = '0';
+  }
+
+  // 控制H.GIF
+   if (scrollPosition > windowHeight / 2) {  // 根据滚动位置调整显示
+    hGif.style.transform = 'scale(1)';
+    hGif.style.opacity = '0.8';  // 显示 H.GIF
+  } else {
+    hGif.style.transform = 'scale(0)';
+    hGif.style.opacity = '0';  // 隐藏 H.GIF
+  }
+
+
+// 为每个可拖动元素（an1-an7）添加悬停和移出事件
+
+const draggableElements = document.querySelectorAll('#an1, #an2, #an3, #an4, #an5, #an6, #an7');
+const eyesImage = document.getElementById('eyes');
+const mouthGif = document.getElementById('mouth');
+
+// 为每个可拖动元素（an1-an7）添加悬停和移出事件
+draggableElements.forEach(element => {
+  element.addEventListener('mouseover', () => {
+    // 鼠标悬停时更改背景图片为 1.png，并隐藏 eyes.png
+    document.body.style.backgroundImage = "url('1.png')";
+    eyesImage.style.display = 'none'; // 隐藏 eyes.png
+    mouthGif.style.display = 'block'; // 显示 mouth.gif
+    mouthGif.style.opacity = '1'; // 确保透明度为 100%
+  });
+
+  element.addEventListener('mouseout', () => {
+    // 鼠标移出时恢复背景图片为 Emotion2Bg.png，并显示 eyes.png
+    document.body.style.backgroundImage = "url('Emotion2Bg.png')";
+    eyesImage.style.display = 'block'; // 显示 eyes.png
+    mouthGif.style.display = 'none'; // 隐藏 mouth.gif
+  });
+});
+draggableElements.forEach(element => {
+  // 禁止拖动时出现虚影
+  element.addEventListener('dragstart', (e) => {
+    e.preventDefault(); // 取消默认的拖动虚影效果
+  });
+
+  // 实现元素拖动功能
+  element.addEventListener('mousedown', (e) => {
+    let shiftX = e.clientX - element.getBoundingClientRect().left;
+    let shiftY = e.clientY - element.getBoundingClientRect().top;
+
+    function moveAt(pageX, pageY) {
+      element.style.left = pageX - shiftX + 'px';
+      element.style.top = pageY - shiftY + 'px';
+    }
+
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+    }
+
+    // 当鼠标移动时，元素跟随移动
+    document.addEventListener('mousemove', onMouseMove);
+
+    // 当鼠标松开时，停止移动
+    document.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', onMouseMove);
+    }, { once: true });
+  });
+
+  // 悬停时背景变化并显示 mouth.gif
+  element.addEventListener('mouseover', () => {
+    document.body.classList.add('hovered');
+    mouthGif.style.display = 'block'; // 显示 mouth.gif
+  });
+
+  // 移出悬停效果：恢复背景并隐藏 mouth.gif
+  element.addEventListener('mouseout', () => {
+    document.body.classList.remove('hovered');
+    mouthGif.style.display = 'none'; // 隐藏 mouth.gif
+  });
+});
+
+
+//咀嚼和消失
+const chewSound = document.getElementById('chewSound');
+
+// 随机生成掉落图片
+const picArray = ['pic1.png', 'pic2.png', 'pic3.png', 'pic4.png'];
+
+// 检测是否图片放置在 mouth.gif 上
+function isOverlapping(element1, element2) {
+  const rect1 = element1.getBoundingClientRect();
+  const rect2 = element2.getBoundingClientRect();
+  
+  return !(rect1.right < rect2.left || 
+           rect1.left > rect2.right || 
+           rect1.bottom < rect2.top || 
+           rect1.top > rect2.bottom);
+}
+
+draggableElements.forEach(element => {
+  // 实现元素拖动功能
+  element.addEventListener('mousedown', (e) => {
+    let shiftX = e.clientX - element.getBoundingClientRect().left;
+    let shiftY = e.clientY - element.getBoundingClientRect().top;
+
+    function moveAt(pageX, pageY) {
+      element.style.left = pageX - shiftX + 'px';
+      element.style.top = pageY - shiftY + 'px';
+    }
+
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    document.addEventListener('mouseup', () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      
+      // 检测是否放在 mouth.gif 上
+      if (isOverlapping(element, mouthGif)) {
+        // 播放咀嚼声音
+        chewSound.play();
+        
+        // an1-an7 图片消失
+        element.style.display = 'none';
+
+        // 随机选择一个 pic 图片
+        const randomPic = picArray[Math.floor(Math.random() * picArray.length)];
+        createFallingImage(randomPic);
+
+        // 延迟2秒后，重新随机显示 an1-an7
+        setTimeout(() => {
+          resetAnElementPosition(element);
+        }, 2000); // 2秒延迟
+      }
+    }, { once: true });
+  });
+});
+
+// 创建掉落图片
+function createFallingImage(pic) {
+  const img = document.createElement('img');
+  img.src = pic;
+  img.style.position = 'fixed';
+  img.style.top = '0';
+  img.style.left = Math.random() * window.innerWidth + 'px'; // 随机水平位置
+  img.style.width = '60vh'; // 图片大小可调整
+  img.style.zIndex = '5000';
+  document.body.appendChild(img);
+
+  // 动画让图片从顶部掉落到底部
+  img.animate([
+    { transform: 'translateY(0)' },
+    { transform: `translateY(${window.innerHeight}px)` }
+  ], {
+    duration: 5000, // 调整掉落速度
+    easing: 'ease-in'
+  });
+
+  // 获取页面宽度和图片宽度，确保图片不会超出页面宽度
+  const maxWidth = window.innerWidth - parseFloat(img.style.width);
+  
+  // 随机生成图片的left值，并确保不会超出页面宽度
+  img.style.left = Math.random() * maxWidth + 'px';
+  
+
+  // 动画结束后移除图片
+  setTimeout(() => {
+    img.remove();
+  }, 5000);
+}
+
+// 随机重置 an1-an7 的位置并显示
+function resetAnElementPosition(element) {
+  // 随机生成新位置
+  const randomTop = Math.random() * (window.innerHeight - element.offsetHeight);
+  const randomLeft = Math.random() * (window.innerWidth - element.offsetWidth);
+
+  // 设置新位置并显示
+  element.style.top = `${randomTop}px`;
+  element.style.left = `${randomLeft}px`;
+  element.style.display = 'block'; // 重新显示
+}
+
+
+
+//clue//
+const clue = document.getElementById('clue');
+let posX = 0;
+let posY = 0;
+let velX = 0.6; // 水平方向速度
+let velY = 1.3; // 垂直方向速度
+const windowWidth = window.innerWidth - clue.offsetWidth;
+
+// 鼠标悬停时，背景图片变为 3.png，同时应用反差色
+clue.addEventListener('mouseover', () => {
+  document.body.style.backgroundImage = "url('3.png')";
+  document.body.style.filter = "invert(100%)";  // 应用反差色
+});
+
+// 鼠标移出时，背景图片恢复为原始的 Emotion2Bg.png，同时移除反差色
+clue.addEventListener('mouseout', () => {
+  document.body.style.backgroundImage = "url('Emotion2Bg.png')";
+  document.body.style.filter = "none";  // 移除反差色效果
+});
+function moveClue() {
+  posX += velX;
+  posY += velY;
+
+  // 检测边界并反向
+  if (posX <= 0 || posX >= windowWidth) velX *= -1;
+  if (posY <= 0 || posY >= windowHeight) velY *= -1;
+
+  // 更新 clue 的位置
+  clue.style.left = `${posX}px`;
+  clue.style.top = `${posY}px`;
+
+  requestAnimationFrame(moveClue); // 平滑动画
+}
+
+// 开始平滑移动
+requestAnimationFrame(moveClue);
+
+
+
+});
+
+// 获取图片元素
+const linkToHomePage = document.getElementById('linkToHomePage');
+
+// 添加点击事件，跳转到 HomePage.html
+linkToHomePage.addEventListener('click', () => {
+  window.location.href = 'HomePage.html'; // 跳转到 HomePage.html
+});
+
+
+
+  </script>
+</body>
+</html>

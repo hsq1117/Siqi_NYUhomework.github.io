@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SADNESS</title>
+    <link rel="icon" href="s3.png" type="image/png">
+
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('19.png');
+            background-size: cover;
+            background-position: center;
+            height: 200vh;
+            overflow-x: hidden; /* 禁止左右滚动 */
+            position: relative;
+            cursor: url('35.png') 16 16, auto; /* 设置光标，并将热点设置为图片中心 */
+            z-index: -2;
+        }
+
+
+    /* 初始时页面模糊 */
+    #content {
+      filter: blur(20px);
+      transition: filter 1.5s ease;
+      min-height: 200vh;
+      
+    }
+
+    /* 中间提示文字的样式 */
+    #overlay-text {
+      position: fixed;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+      font-weight: 800;
+      font-size: 7vw;
+      color: white;
+      font-family: 'Lobster', cursive;
+      white-space: nowrap; /* 防止换行 */
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 8000;
+      cursor: pointer;
+      transition: opacity 1s ease;
+      
+    }
+
+    /* 鼠标悬停时添加虚线边框并放大文字 */
+    .hover-effect {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.3s ease; /* 放大效果 */
+      
+    }
+
+.hover-effect:hover {
+transform: scale(2.2); /* 悬停时放大文字 */
+color:black;
+background-color: rgba(255, 255, 255, 0.5);
+font-family: Courier New;
+font-size:7em;
+font-style:oblique;
+font-weight:800;
+text-align:left;
+letter-spacing:-0.4em;
+text-transform:uppercase;
+text-decoration:wavy underline 0.3em white;
+border-top:.5em  #ffffff00;
+border-bottom:.5em  #00000000;
+border-radius:100%;
+list-style: square outside;
+border-radius:3% 13% 17% 39%;
+filter: blur(8px);
+
+
+}
+
+    /* 添加虚线边框的效果 */
+    .hover-effect::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -10px; /* 控制边框的位置 */
+      width: 0;
+      height: 100%;
+      border-left: 2em dotted rgb(60, 156, 252); /* 虚线边框 */
+      opacity: 0;
+      transition: opacity 0.3s ease, width 0.3s ease; /* 悬停时渐入 */
+      
+      
+    }
+
+    .hover-effect:hover::before {
+      width: 10em; /* 边框的宽度 */
+      opacity: 1; /* 使边框可见 */
+      
+      
+    }
+
+    #leftCornerImage {
+            position: absolute;
+            bottom: 10px; /* 调整图片距底部的距离 */
+            left: 10px; /* 调整图片距左侧的距离 */
+            width: 15vw; /* 调整图片的大小 */
+            height: auto; /* 保持图片纵横比 */
+            z-index: 10000; /* 置于所有图层的最上方 */
+            cursor: pointer; /* 鼠标悬停时显示手势 */
+        }
+
+
+
+        #imageTop {
+            position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 93em;
+    height: 1300px;
+    animation: moveUpDown 5s infinite ease-in-out; 
+    pointer-events: none; 
+    z-index: 6000;
+        }
+
+        /* 定义 imageTop 上下移动的动画 */
+@keyframes moveUpDown {
+    0% {
+        transform: translate(-50%, -10%); /* 初始位置 */
+    }
+    50% {
+        transform: translate(-50%, 8px); /* 向下移动 */
+    }
+    100% {
+        transform: translate(-50%, -10%); /* 返回原始位置 */
+    }
+}
+
+
+        #imageBottom {
+            position: absolute;
+    bottom: 0vh; /* 使用视窗高度百分比 */
+    left: 52vw; /* 使用视窗宽度百分比 */
+    transform: translateX(-50%);
+    width: 90vw; /* 设置宽度为视窗宽度的一半，等比例缩放 */
+    height: auto; /* 保持高度自动调整 */
+    z-index: 1;
+        }
+
+        #imageBottom2 {
+            position: absolute;
+    bottom: 34vh; /* 使用视窗高度百分比 */
+    left: 53vw; /* 使用视窗宽度百分比 */
+    transform: translateX(-50%);
+    width: 65vw; /* 设置宽度为视窗宽度的一半，等比例缩放 */
+    height: auto; /* 保持高度自动调整 */
+    z-index: 2000;
+        }
+
+        /* 17.gif 位置设置，带有水滴蒙版 */
+        #imageRight {
+    position: absolute;
+    right: 3vw;  /* 使用视窗宽度的 3% 作为距离 */
+    top: 10vh;   /* 使用视窗高度的 10% 作为距离 */
+    width: 33vw; /* 设置宽度为视窗宽度的 30% */
+    height: auto; /* 保持高度自动调整 */
+    z-index: -2;  /* 保持 z-index 设置 */
+    transition: background-image 0.5s ease-in-out;
+  
+}
+  
+        /* 鱼游动效果，每条鱼有不同的动画方向和速度 */
+        .fish {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            pointer-events: none; /* 使鱼图片不响应鼠标事件 */
+            z-index: 5100;
+        }
+
+        /* 23、24：往右游 */
+        #fish1 {
+            animation: swimRight1 12s infinite alternate ease-in-out;
+            
+        }
+
+        @keyframes swimRight1 {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(100vw) translateY(10vh);
+            }
+        }
+
+        #fish2 {
+            animation: swimRight2 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes swimRight2 {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(100vw) translateY(20vh);
+            }
+        }
+
+        /* 26：往右上游 */
+        #fish4 {
+            animation: swimRightUp 18s infinite alternate ease-in-out;
+        }
+
+        @keyframes swimRightUp {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(100vw) translateY(-20vh);
+            }
+        }
+
+        /* 25、27：往左游 */
+        #fish3 {
+            animation: swimLeft1 14s infinite alternate ease-in-out;
+        }
+
+        @keyframes swimLeft1 {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(-100vw) translateY(15vh);
+            }
+        }
+
+        #fish5 {
+            animation: swimLeft2 16s infinite alternate ease-in-out;
+        }
+
+        @keyframes swimLeft2 {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+            100% {
+                transform: translateX(-100vw) translateY(-10vh);
+            }
+        }
+
+
+         /* 定义 Ocean 文字容器样式 */
+         .ocean-container {
+            position: absolute;
+            left: 20px;
+            top: 10%;
+            font-size: 100px;
+            color: blue;
+            font-family: 'Lobster', cursive;
+            cursor: pointer;
+            font-weight: 800;
+            white-space: nowrap; /* 防止换行 */
+            opacity: 50%;
+            z-index: -0.9;
+background-color: rgba(124, 202, 255, 0.5);
+font-style:oblique;
+text-transform:uppercase;
+text-decoration:wavy underline 0.3em white;
+border-top:.5em  #0000008f;
+border-bottom:1em dottrgba(1, 1, 249, 0.502)080;
+border-left:1em black dotted ;
+border-right:1em blue wavy;
+border-radius:20% 23% 50% 30%;
+        }
+
+
+         /* 定义 Tear 的样式，初始隐藏 */
+         .tear {
+            color: white;
+            display: none;
+            transition: opacity 0.5s ease;
+        }
+
+          /* 鼠标悬停时，将 Ocean 分开显示 Tear */
+          .ocean-container:hover .oce {
+            transform: translateX(-50px);
+
+        }
+
+        .ocean-container:hover .an {
+            transform: translateX(50px);
+        }
+
+        .ocean-container:hover .tear {
+            display: inline;
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.5);
+font-size:1em;
+font-style:oblique;
+font-weight:800;
+
+text-align:left;
+letter-spacing:-0.4em;
+text-transform:uppercase;
+text-decoration:wavy underline 0.3em white;
+border-top:.5em dotted #0000008f;
+border-bottom:.5em solid #00000080;
+border-left:2px black dotted ;
+border-right:3px blue wavy;
+
+border-radius:10% 20% 50% 30%;
+        }
+
+        /* 添加动画效果 */
+        .oce, .an {
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+
+ #imageLeft1 {
+    position: absolute; /* 确保伪元素相对定位 */
+    left: 2.2vw; /* 根据视窗宽度百分比调整 */
+    bottom: 41vh; /* 根据视窗高度百分比调整 */
+    width: 17vw; /* 设置图片宽度为视窗宽度的 15% */
+    height: auto; /* 保持图片纵横比 */
+    z-index: 1;
+}
+
+#imageLeft1 {
+    z-index: 1; /* 确保图片显示 */
+}
+
+#pushMeText {
+    position: absolute;
+    bottom: 54vh;
+    left: 12vw;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    font-family: 'Lobster', cursive;
+    cursor: pointer;
+    font-weight: 900;
+    white-space: nowrap;
+    font-size: 3vw;
+    z-index: 6000;
+    opacity: 0;
+    pointer-events: auto; /* 修改这里为 auto */
+    transition: opacity 0.3s ease;
+    background-color: rgba(47, 43, 255, 0.5);
+    text-decoration: wavy underline 0.3em rgb(0, 0, 0);
+    border-top: 1em dotted #0000008f;
+    border-bottom: .5em dashed #00000080;
+    border-left: 2px black dotted;
+    border-right: 3px rgb(0, 0, 0) double;
+}
+
+
+
+/* 当鼠标悬停时图片模糊并放大 */
+#imageLeft1:hover {
+    width: 20vw; /* 悬停时放大图片宽度 */
+    filter: blur(10px); /* 添加模糊效果 */
+}
+
+/* 当鼠标悬停时显示 PUSH ME 文字 */
+#imageLeft1:hover + #pushMeText {
+    opacity: 1; /* 悬停时显示文字 */
+    transition: opacity 0.3s ease; /* 文字显示的过渡效果 */
+}
+
+
+#imageLeft2 {
+    position: absolute;
+    left: 10vw; /* 保持与 #imageLeft1 的比例距离 */
+    bottom: 60vh; /* 根据视窗高度百分比调整 */
+    width: 15vw; /* 设置图片宽度为视窗宽度的 15% */
+    height: auto; /* 保持图片纵横比 */
+    z-index: 0;
+}
+
+/* 添加抖动动画 */
+@keyframes shake {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translate(-2px, -2px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translate(2px, 2px);
+    }
+}
+
+/* 22.png (imageLeft1) 添加抖动动画 */
+#imageLeft1 {
+    animation: shake 1s infinite; /* 1秒抖动，持续循环 */
+}
+
+/* 21.png (imageLeft2) 添加抖动动画 */
+#imageLeft2 {
+    animation: shake 1s infinite; /* 1秒抖动，持续循环 */
+}
+
+
+
+.falling {
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+    will-change: transform, top, left;
+}
+
+@keyframes fall {
+    0% {
+        top: -100px;
+    }
+    100% {
+        top: 100vh;
+    }
+}
+
+#afterImage {
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2000;
+        width: 100vw; /* 设置宽度为视窗宽度的 50%，可以根据需要调整 */
+        height: 40vw; /* 保持图片纵横比 */
+    }
+
+
+    #hover-prompt {
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
+        font-weight: 800;
+        font-size: 7vw;
+        color: white;
+        font-family: 'Lobster', cursive;
+        white-space: nowrap;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 1rem 2rem;
+        border-radius: 10vw;
+        text-align: center;
+        z-index: 8000;
+        opacity: 0; /* 初始状态为不可见 */
+        pointer-events: none; /* 禁止鼠标事件 */
+        transition: opacity 1s ease;
+    }
+
+    /* 悬停时显示提示文字 */
+    .hover-effect:hover + #hover-prompt {
+        opacity: 1; /* 悬停时显示提示文字 */
+    }
+
+
+    </style>
+
+
+
+</head>
+<body>
+   <!-- 模糊的内容区域 -->
+   <div id="content">
+    <img id="imageTop" src="20.png" alt="Top Image">
+    <img id="imageBottom" src="IMG_1559.GIF" alt="Bottom Image">
+    <img id="imageBottom2" src="cry.gif" alt="Bottom Image2">
+    <img id="imageRight" class="water-drop" src="17.gif" alt="Right Image">
+
+    <img id="fish1" class="fish" src="23.gif" alt="Fish Image 1" style="width: 12vw; top: 10%; left: 10%;">
+    <img id="fish2" class="fish" src="24.png" alt="Fish Image 2" style="width: 12vw; top: 30%; left: 20%;">
+    <img id="fish3" class="fish" src="25.png" alt="Fish Image 3" style="width: 14vw; top: 60%; left: 30%;">
+    <img id="fish4" class="fish" src="26.png" alt="Fish Image 4" style="width: 12vw; top: 26%; left: 80%;">
+    <img id="fish5" class="fish" src="27.png" alt="Fish Image 5" style="width: 13vw; top: 70%; left: 3%;">
+    
+    <!-- 其他页面内容 -->
+
+
+     <!-- Ocean 和 Tear 容器 -->
+     <div class="ocean-container">
+        <span class="oce">Oce</span><span class="tear">Tear</span><span class="an">an</span>
+    </div>
+
+  
+    <img id="imageLeft2" src="21.png" alt="Image 21" >
+    <audio id="chewSound" src="chew3.mp3" preload="auto"></audio>
+
+    <img id="imageLeft1" src="22.png" alt="Image 22">
+    <span id="pushMeText">PUSH ME</span>
+
+    <div id="pileArea"></div> <!-- 这是页面底部堆积图片的容器 -->
+    <img id="leftCornerImage" src="s6 copy.png" alt="Left Corner Image">
+    <img id="afterImage" src="after.gif" alt="After Image" style="display: none; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 2000;">
+</div>
+
+
+ <!-- 添加提示文字 -->
+ <div id="overlay-text" class="hover-effect">It's Okay To Cry</div>
+ <span id="hover-prompt" class="hover-effect">Drag, Match, and Eat!</span> <!-- 新增的提示文字 -->
+</div>  
+
+
+
+
+
+    <script>
+
+       // 获取 content 和 overlay-text 元素
+       const content = document.getElementById('content');
+        const overlayText = document.getElementById('overlay-text');
+        const hoverPrompt = document.getElementById('hover-prompt');
+
+        // 为 overlayText 添加点击事件，移除模糊效果和自身
+        overlayText.addEventListener('click', () => {
+            content.style.filter = 'blur(0px)'; // 移除模糊效果
+            overlayText.style.opacity = '0'; // 渐隐提示文字
+            setTimeout(() => {
+                overlayText.style.display = 'none'; // 隐藏提示文字
+            }, 1000); // 等待1秒后隐藏
+        });
+
+   // 为 hover-effect 添加悬停效果，显示提示文字
+   overlayText.addEventListener('mouseenter', () => {
+        hoverPrompt.style.opacity = '1'; // 显示“Drag, Match, and Eat!”
+    });
+
+    overlayText.addEventListener('mouseleave', () => {
+        hoverPrompt.style.opacity = '0'; // 隐藏“Drag, Match, and Eat!”
+    });
+
+
+//随机掉落//
+
+const images = ['s1.png', 's2.png', 's3.png', 's4.png', 's5.png', 's6.png'];
+
+let draggedImage = null; // 只保存当前被拾取的图片
+
+function createFallingImage() {
+    const imgSrc = images[Math.floor(Math.random() * images.length)];
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.classList.add('falling');
+    img.style.width = '9vw';
+    img.style.position = 'absolute';
+    img.style.zIndex = '5000'; 
+
+    // 随机设置初始位置
+    img.style.left = Math.random() * window.innerWidth + 'px';
+    
+    // 随机设置掉落速度
+    const fallDuration = 5 + Math.random() * 13; // 5 到 15 秒
+    img.style.animation = `fall ${fallDuration}s linear infinite`;
+
+    document.body.appendChild(img);
+    content.appendChild(img);
+
+    // 添加拖拽功能
+    img.addEventListener('mousedown', onMouseDown);
+
+    function onMouseDown(event) {
+        // 如果已经有图片被拾取，就不允许再拾取其他图片
+        if (draggedImage) return;
+
+        // 停止当前图片的下落动画
+        img.style.animation = 'none';
+        draggedImage = img; // 只保存当前被拾取的图片
+
+        // 设置图片跟随鼠标的位置
+        function moveAt(pageX, pageY) {
+            draggedImage.style.left = pageX - draggedImage.offsetWidth / 2 + 'px';
+            draggedImage.style.top = pageY - draggedImage.offsetHeight / 2 + 'px';
+        }
+
+        function onMouseMove(e) {
+            moveAt(e.pageX, e.pageY);
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+
+        img.onmouseup = function() {
+            document.removeEventListener('mousemove', onMouseMove);
+            draggedImage = null; // 鼠标松开时，允许下一次拾取图片
+            img.onmouseup = null; // 停止拖拽
+
+            // 在鼠标松开后检查碰撞
+            checkCollision(img);
+        };
+
+        img.ondragstart = function() {
+            return false; // 禁用默认的拖拽行为
+        };
+    }
+}
+
+// 每隔一段时间创建新的图片掉落
+setInterval(createFallingImage, 2000);
+
+// 碰撞检测函数
+function checkCollision(image) {
+    const allImages = document.querySelectorAll('.falling'); // 获取所有掉落的图片
+    
+    allImages.forEach(img => {
+        if (image !== img) { 
+            if (isColliding(image, img)) {
+                // 如果碰撞，则两个图片上升
+                flyUp(image);
+                flyUp(img);
+            }
+        }
+    });
+}
+
+// 判断是否发生碰撞
+function isColliding(img1, img2) {
+    const rect1 = img1.getBoundingClientRect();
+    const rect2 = img2.getBoundingClientRect();
+
+    return !(
+        rect1.right < rect2.left || 
+        rect1.left > rect2.right || 
+        rect1.bottom < rect2.top || 
+        rect1.top > rect2.bottom
+    );
+}
+
+// 图片上升并移除
+function flyUp(image) {
+    image.style.transition = "transform 1.5s";
+    image.style.transform = `translateY(-${window.innerHeight}px)`;
+    image.addEventListener('transitionend', () => {
+        image.remove(); // 上升结束后移除图片
+    });
+}
+
+
+
+// 随机图片数组
+const backgroundImages = ['29.png', '30.png', '31.png', '32.png', '33.png'];
+function flyUp(image) {
+    // 获取音频元素并播放音效
+    const audio = document.getElementById('chewSound');
+    audio.currentTime = 0; // 确保从头开始播放
+    audio.play();
+
+    // 3秒后暂停音频
+    setTimeout(() => {
+        audio.pause();
+    }, 3000); // 3000 毫秒 = 3 秒
+
+    image.style.transition = "transform 1.5s";
+    image.style.transform = `translateY(-${window.innerHeight}px)`;
+
+    image.addEventListener('transitionend', () => {
+        image.remove(); // 上升结束后移除图片
+        
+        // 随机选择一个背景图片并显示在页面上
+        addRandomBackgroundImage();
+    });
+}
+
+// 添加随机背景图片函数
+function addRandomBackgroundImage() {
+    // 随机选择一个图片
+    const randomImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+    
+    // 创建一个新的 img 元素
+    const img = document.createElement('img');
+    img.src = randomImage;
+    img.style.position = 'absolute';
+    img.style.width = '15vw';  // 设置图片宽度
+    img.style.left = Math.random() * (window.innerWidth - 200) + 'px';  // 确保图片不超出窗口
+    img.style.top = Math.random() * (window.innerHeight - 200) + 'px';  // 确保图片在窗口范围内
+    img.style.zIndex = '-1';  // 保证图片在背景之上
+
+    // 将图片添加到 body 中
+    document.body.appendChild(img);
+}
+
+
+
+const imageBottom = document.getElementById('imageBottom');
+const afterImage = document.getElementById('afterImage');
+const pushMeText = document.getElementById('pushMeText');
+const chewSound = document.getElementById('chewSound'); // 获取音频元素
+
+pushMeText.addEventListener('click', function() {
+    // 让 IMG_1559.GIF 渐渐消失
+    imageBottom.style.transition = 'opacity 1s ease';
+    imageBottom.style.opacity = '0';
+
+    // 立即显示 after.gif 并播放音效
+    afterImage.style.display = 'block';
+    afterImage.style.opacity = '1';
+
+    // 播放 chew sound
+    chewSound.currentTime = 0; // 确保从头开始播放
+    chewSound.play();
+
+    // 2 秒后隐藏 after.gif 并停止音效
+    setTimeout(() => {
+        afterImage.style.display = 'none';
+        chewSound.pause(); // 停止播放音效
+
+        // 再过 2 秒重新显示 IMG_1559.GIF 并重新播放 GIF
+        setTimeout(() => {
+            imageBottom.style.opacity = '1'; // 重新显示 IMG_1559.GIF
+            const newSrc = imageBottom.src; // 获取当前的 src
+            imageBottom.src = ''; // 清空 src，重置 GIF 播放
+            imageBottom.src = newSrc; // 恢复 src 以从头播放 GIF
+        }, 1000); // 2 秒后重新显示 IMG_1559.GIF
+
+    }, 2000); // after.gif 播放 2 秒后隐藏
+});
+
+
+   // 点击 s6 copy.png 跳转到 HomePage.html
+   leftCornerImage.addEventListener('click', () => {
+            window.location.href = 'HomePage.html'; // 链接到 HomePage.html
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <!-- 添加 mouth.png 作为图标 -->
+    <link rel="icon" href="mouth.png" type="image/png">
+
+    
+    <style>
+        #glitchVideo, #eraserCanvas, #typingText {
+    display:; /* 隐藏视频、擦除效果和打字效果文字 */
+}
+
+
+       
+ 
+body {
+    background-image: url('BG1.png');
+    background-size: 100% auto; /* 宽度与页面一致，高度自动调整 */
+    background-position: top center; /* 背景图顶部居中 */
+    background-repeat: repeat; /* 背景不重复 */
+}
+
+
+
+#topImage {
+    position: absolute;
+    top: -10%;
+    left: 0;
+    width: 100%;
+    height: auto; /* 高度自动调整以保持图片比例 */
+    pointer-events: none;
+    z-index: 991; /* 确保它在其他内容之上 */
+}
+
+        /* 光标颜色效果 */
+        #eraserCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000; /* 确保覆盖在其他元素之上 */
+    cursor: crosshair; /* 光标样式 */
+}
+
+        /* 光标颜色效果 */
+        #eraserCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000; /* 确保覆盖在其他元素之上 */
+    cursor: crosshair; /* 光标样式 */
+}
+
+.trail {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    opacity: 0.7;
+    animation: fadeOut 1s ease-out forwards, colorChange 1s ease-out forwards;
+    background-color: #ffb3ba;
+    z-index: 5000;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 0.7;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes colorChange {
+    0% {
+        background-color: #0044ff;
+    }
+    25% {
+        background-color: #3d66fb;
+    }
+    50% {
+        background-color: #ffdfba;
+    }
+    75% {
+        background-color: #00bbff;
+    }
+    100% {
+        background-color: #00ffe5;
+    }
+}
+
+
+
+#glitchVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1000;
+}
+
+#typingText {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    z-index: 1000;
+    opacity: 0;
+    font-weight: 800;
+    white-space: pre-wrap; 
+}
+
+
+#e5 {
+    position: absolute;
+    top: 125vh;
+    right: 19vw;
+    width: 30vw;
+    filter: blur(5px); /* 初始模糊效果 */
+    transition: filter 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
+    z-index: 998; /* 确保在bg2上 */
+    animation: shake 0.5s infinite; 
+}
+
+#e5:hover {
+    filter: blur(0) contrast(200%); /* 鼠标悬停时去除模糊并加大反差 */
+    transform: scale(1.5); /* 悬停时稍微放大 */
+    cursor: url('enter.png'), auto; 
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+
+@keyframes blinkWithGlow {
+    0% {
+        opacity: 1;
+        filter: blur(5px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)); /* 添加光晕 */
+    }
+    50% {
+        opacity: 0.2;
+        filter: blur(5px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)); /* 减弱光晕 */
+    }
+    100% {
+        opacity: 1;
+        filter: blur(5px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)); /* 恢复光晕 */
+    }
+}
+
+#e6 {
+    position: absolute;
+    top: 150vh;
+    left: 0vw;
+    width: 40vw;
+    z-index: 998; /* 确保在bg2上 */
+    animation: blinkWithGlow 1.5s infinite; /* 添加闪烁和光晕效果 */
+    transition: filter 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
+}
+
+#e6:hover {
+    animation: none; /* 悬停时停止闪烁 */
+    opacity: 1; /* 确保悬停时完全可见 */
+    filter: blur(0) contrast(200%) drop-shadow(0 0 15px rgba(255, 255, 255, 0.9)); /* 悬停时去除模糊并增强光晕 */
+    transform: scale(1.05); /* 悬停时稍微放大 */
+}
+
+
+#e2 {
+    position: absolute;
+    top: 145vh;
+    left: 12vw;
+    width: 30vw;
+    z-index: 998;
+    pointer-events: none;
+}
+
+#e8 {
+    position: absolute;
+    top: 75vh;
+    left: 0vw;
+    width: 50vw;
+    filter: blur(5px); /* 初始模糊效果 */
+    transition: filter 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
+    z-index: 997; /* 确保在bg2上 */
+}
+
+#e8:hover {
+    filter: blur(0) contrast(200%); /* 鼠标悬停时去除模糊并加大反差 */
+    transform: scale(1.05); /* 悬停时稍微放大 */
+}
+
+
+#b1 {
+    position: absolute; 
+    top: 45vh;
+    left: 3vw;
+    width: 25vw;
+    rotate: -25deg;
+    z-index: 996;
+    filter: blur(5px); /* 初始模糊效果 */
+    transition: filter 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
+}
+
+#b1:hover {
+    filter: blur(0) contrast(200%); /* 鼠标悬停时去除模糊并加大反差 */
+    transform: scale(1.5); /* 悬停时稍微放大 */
+    
+}
+
+#circle {
+    position: absolute;
+    top: 50%; /* 设置圆形的初始位置 */
+    left: 6%; /* 调整水平位置 */
+    width: 350px;
+    height: 350px;
+    background-color: rgba(139, 0, 0, 0.359); /* 暗红色半透明 */
+    border-radius: 50%; /* 圆形 */
+    z-index: 995; /* 让它在 #b1 后面 */
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+
+
+
+#e8Gif {
+    position: absolute;
+    top: 56vh;
+    left: 55vw;
+    width: 30vw;
+    pointer-events: none;
+    z-index: 999;
+}
+
+#e7 {
+    position: absolute;
+    top: 45vh;
+    left: 50vw;
+    width: 45vw;
+    filter: blur(5px); /* 初始模糊效果 */
+    transition: filter 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
+    z-index: 998; /* 确保在bg2上 */
+    animation: float 3s ease-in-out infinite; /* 添加上下浮动动画 */
+}
+
+#e7:hover {
+    filter: blur(0) contrast(200%); /* 鼠标悬停时去除模糊并加大反差 */
+    transform: scale(1.05); /* 悬停时稍微放大 */
+    cursor: url('enter.png'), auto;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px); /* 向上移动10px */
+    }
+    100% {
+        transform: translateY(0); /* 恢复到原位置 */
+    }
+}
+
+
+#e1 {
+    position: absolute;
+    top: 30vh;
+    left:25vw;
+    width: 30vw;
+    z-index: 991; 
+    pointer-events: none; /* 确保它不拦截鼠标事件 */
+    animation: shake 0.5s infinite; 
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+
+#e9Gif {
+    position: absolute;
+    top: 8vh;
+    left: 33vw;
+    width: 30vw;
+    rotate: -20deg;
+    filter: blur(5px); /* 初始模糊效果 */
+    transition: filter 0.3s ease, transform 0.3s ease; /* 添加过渡效果 */
+    z-index: 990; /* 确保在bg2上 */
+    
+}
+
+#e9Gif:hover {
+    filter: blur(0) contrast(200%); /* 鼠标悬停时去除模糊并加大反差 */
+    transform: scale(1.05); /* 悬停时稍微放大 */
+    cursor: url('enter.png'), auto; /* 悬停时光标变为图片 */
+}
+
+#e3 {
+    position: absolute;
+    top: 25vh;
+    left: 65vw;
+    width: 30vw;
+    z-index: 997;
+}
+
+
+#hbGif {
+    position: absolute;
+    bottom: -150vh; /* 初始位置在页面底部外 */
+    left: 50vw;
+    transform: translateX(-50%);
+    width: 90vw; /* 根据需要调整大小 */
+    z-index: 1001; /* 确保在其他元素之上 */
+    transition: bottom 5s ease-in-out; /* 设置动画效果 */
+}
+
+#particles-container-8 {
+    position: absolute;
+    z-index: 1002; /* 确保在 hbGif 上方 */
+}
+
+
+#img41 {
+    position: absolute;
+    top: 65vh;
+    left: 25vw;
+    width: 28vw;
+    z-index: 990; /* 确保在bg2上 */
+    
+}
+
+#img42 {
+    position: absolute;
+    top: 190vh;
+    left: 30vw;
+    width: 20vw;
+    z-index: 997; /* 确保在bg2上 */
+    
+}
+
+
+</style>
+</head>
+
+
+
+<body>
+
+    
+
+    <video id="glitchVideo" src="glitch.mp4" autoplay muted playsinline></video>
+    <div id="typingText"></div>
+    <canvas id="eraserCanvas"></canvas>
+
+    <img id="topImage" src="bg2.png" alt="Top Image">
+    <div style="height: 1790px;"></div>
+
+<img id="e6" src="e6.png" alt="e6">
+<img id="e2" src="e2.png" alt="e2">
+<img id="e8" src="e8.png" alt="e8">
+<img id="e8Gif" src="e8.gif" alt="e8Gif">
+<img id="e1" src="e1.png" alt="e1">
+<img id="e3" src="e3.png" alt="e3">
+<img id="b1" src="butterfly.gif" alt="b1">
+
+<img id="img41" src="41.png" alt="img41">
+<img id="img42" src="42.png" alt="img42">
+
+<a href="Emotion2.html" id="e9GifLink">
+    <img id="e9Gif" src="e9.gif" alt="e9Gif">
+</a>
+
+<a href="Emotion1.html" id="e5Link">
+    <img id="e5" src="e5.png" alt="e5">
+</a>
+
+
+<a href="Emotion3copy.html" id="e7Link">
+    <img id="e7" src="e7.png" alt="e7">
+</a>
+
+
+<div id="circle"></div>
+
+
+<audio id="twinkleSound" src="twinkle.mp3" preload="auto"></audio>
+<audio id="fireworksSound" src="fireworks.mp3" preload="auto"></audio>
+<audio id="celebrateSound" src="celebrate.mp3" preload="auto"></audio>
+<audio id="screamSound" src="scream.mp3" preload="auto"></audio>
+<audio id="heartbeatSound" src="heartbeat.mp3" preload="auto"></audio>
+<audio id="rainSound" src="rain.mp3" preload="auto"></audio>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
+
+
+<img id="hbGif" src="hb.gif" alt="hbGif" style="display: none;">
+<!-- 粒子效果的容器 -->
+<div id="particles-container-8" style="position: absolute; display: none;"></div>
+
+<img id="cloudGif" src="cloud.gif" alt="cloudGif" style="display: none;">
+
+<!-- 礼花容器 -->
+<div id="confettiContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2000; display: none;"></div>
+
+<!-- 句子容器 -->
+<div id="randomQuote" style="position: fixed; top: -10%; left: 50%; transform: translateX(-50%); font-size: 2rem; color: white; font-weight: bold; z-index: 2001; display: none; transition: top 2s ease-in-out;"></div>
+
+
+    <script>
+document.addEventListener("mousemove", function(e) {
+    // 确保在擦除功能前或完成后，彩色光标效果正常显示
+    if (!document.getElementById('eraserCanvas').style.display || 
+        document.getElementById('eraserCanvas').style.display === 'none') {
+        var body = document.querySelector("body");
+        var trail = document.createElement("div");
+
+        trail.className = "trail";
+        trail.style.left = e.pageX + "px";
+        trail.style.top = e.pageY + "px";
+
+        body.appendChild(trail);
+
+        setTimeout(function() {
+            trail.remove();
+        }, 1000); // 调整彩色光标效果持续的时间
+    }
+});
+
+const glitchVideo = document.getElementById('glitchVideo');
+const typingText = document.getElementById('typingText');
+const canvas = document.getElementById('eraserCanvas');
+const ctx = canvas.getContext('2d');
+
+// 视频播放时显示打字效果
+glitchVideo.addEventListener('play', () => {
+    showTypingEffect();
+});
+
+// 打字效果
+function showTypingEffect() {
+    const text = "Oops, you've hit a snag while entering \n the park. Try to explor!";
+    let index = 0;
+
+    typingText.style.opacity = 1; // 显示文字
+
+    function type() {
+        if (index < text.length) {
+            typingText.textContent += text[index];
+            index++;
+            setTimeout(type, 50); // 调整打字速度
+        } else {
+            // 文字打完后再等到视频结束
+            glitchVideo.addEventListener('ended', () => {
+                glitchVideo.style.display = 'none'; // 隐藏视频
+                typingText.style.opacity = 0; // 隐藏文字
+                startEraser(); // 开始擦除功能
+            });
+        }
+    }
+
+    type();
+}
+
+// 开始擦除功能
+function startEraser() {
+    // 设置 canvas 尺寸和其他逻辑与之前相同
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    let erasedPixels = 0;
+    const totalPixels = canvas.width * canvas.height;
+    const eraseThreshold = 0.15 * totalPixels;
+
+    // 鼠标移动时进行擦除
+    canvas.addEventListener('mousemove', (e) => {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.arc(e.clientX, e.clientY, 30, 0, Math.PI * 2, false); // 60 是橡皮擦的大小，可以调整
+        ctx.fill();
+
+        // 更新擦除的像素数量
+        const imageData = ctx.getImageData(e.clientX - 15, e.clientY - 15, 30, 30);
+        let pixels = imageData.data;
+        for (let i = 3; i < pixels.length; i += 4) {
+            if (pixels[i] === 0) {
+                erasedPixels++;
+            }
+        }
+
+        // 检查是否达到擦除阈值
+        if (erasedPixels >= eraseThreshold) {
+            canvas.style.display = 'none'; // 隐藏整个黑色覆盖层
+            document.querySelector('body').style.cursor = 'auto'; // 恢复光标
+        }
+    });
+
+    // 窗口大小改变时更新 canvas 尺寸
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        erasedPixels = 0; // 重置擦除计数
+    });
+}
+
+
+document.addEventListener("mousemove", function(e) {
+            // 彩色光标效果逻辑保持不变
+            if (!document.getElementById('eraserCanvas').style.display || 
+                document.getElementById('eraserCanvas').style.display === 'none') {
+                var body = document.querySelector("body");
+                var trail = document.createElement("div");
+
+                trail.className = "trail";
+                trail.style.left = e.pageX + "px";
+                trail.style.top = e.pageY + "px";
+
+                body.appendChild(trail);
+
+                setTimeout(function() {
+                    trail.remove();
+                }, 1000);
+            }
+        });
+
+        // 获取音频元素
+    const twinkleSound = document.getElementById('twinkleSound');
+    
+    // 给 e6 添加点击事件监听
+    document.getElementById('e6').addEventListener('click', function() {
+        // 播放音效
+        twinkleSound.play();
+    });
+
+    // 获取 fireworks 音频元素
+    const fireworksSound = document.getElementById('fireworksSound');
+    
+    // 给 e8 添加点击事件监听
+    document.getElementById('e8').addEventListener('click', function() {
+        // 播放音效
+        fireworksSound.currentTime = 0; // 从头开始播放
+        fireworksSound.play();
+        
+        // 设置3秒后暂停音效
+        setTimeout(function() {
+            fireworksSound.pause();
+        }, 3000); // 3秒 = 3000毫秒
+    });
+
+// 获取 celebrate 音频元素
+const celebrateSound = document.getElementById('celebrateSound');
+    
+    // 给 butterfly 添加点击事件监听
+    document.getElementById('b1').addEventListener('click', function() {
+        // 播放音效
+        celebrateSound.currentTime = 0; // 从头开始播放
+        celebrateSound.play();
+    });
+    
+
+    // 获取 scream 音频元素
+    const screamSound = document.getElementById('screamSound');
+    
+    // 给 e5 添加点击事件监听
+    document.getElementById('e5Link').addEventListener('click', function(event) {
+        event.preventDefault(); // 阻止默认链接跳转
+        
+        // 播放音效
+        screamSound.currentTime = 0; // 确保从头开始播放
+        screamSound.play();
+        
+        // 设置延迟跳转到 Emotion1.html，等待音效播放结束
+        setTimeout(function() {
+            window.location.href = 'Emotion1.html'; // 跳转到 Emotion1.html
+        }, 1000); // 延迟3秒（3000毫秒），与音效时间一致
+    });
+
+// 获取 heartbeat 音频元素
+const heartbeatSound = document.getElementById('heartbeatSound');
+    
+    // 给 e9GifLink 添加点击事件监听
+    document.getElementById('e9GifLink').addEventListener('click', function(event) {
+        event.preventDefault(); // 阻止默认链接跳转
+        
+        // 播放音效
+        heartbeatSound.currentTime = 0; // 确保从头开始播放
+        heartbeatSound.play();
+        
+        // 在2秒后停止音效播放，并在1秒后跳转到下一页
+        setTimeout(function() {
+            heartbeatSound.pause(); // 停止播放音效
+            setTimeout(function() {
+                window.location.href = 'Emotion2.html'; // 延迟1秒后跳转到 Emotion2.html
+            }, 500); // 延迟1秒
+        }, 2000); // 播放2秒
+    });
+
+// 获取 rain 音频元素
+    const rainSound = document.getElementById('rainSound');
+    
+    // 给 e7Link 添加点击事件监听
+    document.getElementById('e7Link').addEventListener('click', function(event) {
+        event.preventDefault(); // 阻止默认链接跳转
+        
+        // 播放音效
+        rainSound.currentTime = 0; // 确保从头开始播放
+        rainSound.play();
+        
+        // 在2秒后停止音效播放，并在1秒后跳转到下一页
+        setTimeout(function() {
+            rainSound.pause(); // 停止播放音效
+            setTimeout(function() {
+                window.location.href = 'Emotion3copy.html'; // 延迟1秒后跳转到 Emotion3copy.html
+            }, 1000); // 延迟1秒
+        }, 2000); // 播放2秒
+    });
+
+// 获取 hbGif 和粒子容器
+const hbGif = document.getElementById('hbGif');
+const particlesContainer8 = document.getElementById('particles-container-8');
+
+// 给 e8 添加点击事件监听，控制气球从底部重新飞入
+document.getElementById('e8').addEventListener('click', function () {
+    hbGif.style.display = 'block'; // 显示 hb.gif
+    hbGif.style.visibility = 'visible'; // 确保每次显示时可见
+    hbGif.style.transition = 'none'; // 移除之前的动画设置
+    hbGif.style.bottom = '-150vh'; // 将气球初始化在页面底部外
+    setTimeout(() => {
+        hbGif.style.transition = 'bottom 5s ease-in-out'; // 设置飞入动画效果
+        hbGif.style.bottom = '-2vh'; // 将气球飞到较低的位置
+    }, 50); // 确保样式变化生效后触发动画
+});
+
+// 气球点击后碎裂消失
+hbGif.addEventListener('click', function () {
+    // 生成粒子并在当前位置散开
+    createParticles8(hbGif);
+
+    // 隐藏气球但不重置位置
+    hbGif.style.visibility = 'hidden'; // 隐藏气球但保留当前状态
+});
+
+// 生成彩色礼花/烟花效果，接收图片作为参数
+function createParticles8(imgElement) {
+    // 设置粒子容器的位置为图片当前位置
+    const imgRect = imgElement.getBoundingClientRect();
+    particlesContainer8.style.top = `${imgRect.top}px`;
+    particlesContainer8.style.left = `${imgRect.left}px`;
+    particlesContainer8.style.width = `${imgRect.width}px`;
+    particlesContainer8.style.height = `${imgRect.height}px`;
+
+    particlesContainer8.style.display = 'block';
+    particlesContainer8.innerHTML = '';
+
+    // 随机生成彩色粒子块来模拟烟花效果
+    const colors = ['#FF5733', '#FFBD33', '#75FF33', '#33FFBD', '#3385FF', '#A333FF', '#FF33A8']; // 多彩颜色数组
+    const particleCount = 100; // 增加粒子的数量，使效果更密集
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.top = '50%'; // 从容器中间开始
+        particle.style.left = '50%'; // 从容器中间开始
+        particle.style.width = '0.8vw'; // 设置粒子的宽度，更小
+        particle.style.height = '0.8vw'; // 设置粒子的高度，更小
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)]; // 随机选择颜色
+        particle.style.borderRadius = '50%'; // 圆形粒子，模拟烟花效果
+        particle.style.opacity = 1; // 初始透明度
+
+        particlesContainer8.appendChild(particle);
+
+        // 随机的散开效果
+        const randomX = (Math.random() - 0.5) * 100; // 横向随机飞出距离，范围更大
+        const randomY = (Math.random() - 0.5) * 100; // 纵向随机飞出距离，范围更大
+        const randomRotate = Math.random() * 720; // 随机旋转角度
+
+        setTimeout(() => {
+            particle.style.transition = `transform 1.5s ease-out, opacity 1.5s ease-out`; // 平滑过渡效果
+            particle.style.transform = `translate(${randomX}vw, ${randomY}vh) rotate(${randomRotate}deg) scale(1.5)`; // 粒子飞出动画，范围更大
+            particle.style.opacity = 0; // 粒子逐渐消失
+        }, 10);
+    }
+
+    setTimeout(() => {
+        particlesContainer8.style.display = 'none';
+        particlesContainer8.innerHTML = '';
+    }, 3000); // 3秒后隐藏粒子效果
+}
+
+// 获取 cloudGif 元素
+const cloudGif = document.getElementById('cloudGif');
+
+// 添加点击事件监听
+document.getElementById('b1').addEventListener('click', function () {
+    // 播放音效
+    celebrateSound.currentTime = 0; // 从头开始播放
+    celebrateSound.play();
+
+    // 显示 cloudGif 并设置初始位置
+    cloudGif.style.display = 'block';
+    cloudGif.style.position = 'absolute';
+    cloudGif.style.bottom = '-150vh'; // 初始位置在页面底部
+    cloudGif.style.left = '50%'; // 水平居中
+    cloudGif.style.transform = 'translateX(-50%)'; // 水平居中
+    cloudGif.style.transition = 'bottom 5s ease-in-out'; // 动画效果
+    cloudGif.style.zIndex = '1003'; // 确保在页面的最顶层
+
+
+    // 触发动画，从底部飞到顶部
+    setTimeout(() => {
+        cloudGif.style.bottom = '100vh'; // 从底部飞到顶部
+    }, 50);
+
+    // 5秒后将其隐藏，以便下次点击时重复动画
+    setTimeout(() => {
+        cloudGif.style.display = 'none';
+    }, 5000);
+});
+
+
+// 获取 e6 元素
+const e6 = document.getElementById('e6');
+
+// 获取 confettiContainer 和 randomQuote 元素
+const confettiContainer = document.getElementById('confettiContainer');
+const randomQuote = document.getElementById('randomQuote');
+
+// 定义句子数组
+const quotes = [
+    "Stay positive. The only difference between a good day and a bad day is your attitude.",
+    "Life is too short to spend another day at war with yourself.",
+    "Attitude is the 'little thing' that makes a big difference.",
+    "You get in life what you have the courage to ask for."
+];
+
+// 定义颜色数组用于句子的随机颜色
+const colors = ['#FF5733', '#FFBD33', '#75FF33', '#33FFBD', '#3385FF', '#A333FF', '#FF33A8', '#FF69B4', '#FFD700'];
+
+// 点击 e6 时触发礼花效果和显示随机句子
+e6.addEventListener('click', function () {
+    // 显示 confettiContainer 并生成礼花效果
+    confettiContainer.style.display = 'block';
+    generateConfetti();
+
+    // 随机选取一句话和颜色
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    randomQuote.textContent = quotes[randomIndex];
+    randomQuote.style.color = randomColor;
+    randomQuote.style.display = 'block';
+    randomQuote.style.top = '-10%'; // 初始位置在页面上方
+    randomQuote.style.fontSize = '4rem'; // 调整字体大小
+    
+    // 触发句子下落动画
+    setTimeout(() => {
+        randomQuote.style.top = '30%'; // 句子掉落到页面中间
+    }, 100); 
+
+    // 礼花效果和句子显示3秒，之后隐藏
+    setTimeout(() => {
+        confettiContainer.style.display = 'none';
+        randomQuote.style.display = 'none';
+    }, 5000);
+});
+
+// 生成礼花效果
+function generateConfetti() {
+    confettiContainer.innerHTML = ''; // 清空之前的礼花
+    const colors = ['#FF5733', '#FFBD33', '#75FF33', '#33FFBD', '#3385FF', '#A333FF', '#FF33A8', '#FF69B4', '#FFD700']; // 礼花颜色数组
+    const numberOfConfetti = 150; // 增加礼花数量
+
+    for (let i = 0; i < numberOfConfetti; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed'; // 设置为固定定位，确保礼花跟随滚动
+        confetti.style.width = '15px'; // 增大礼花的宽度
+        confetti.style.height = '15px'; // 增大礼花的高度
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.top = `${Math.random() * 100}vh`; // 在视口高度范围内随机位置生成礼花
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.opacity = 0.8; // 增加礼花的透明度
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        confettiContainer.appendChild(confetti);
+
+        // 随机下落动画
+        const fallDistance = 200 + Math.random() * 800; // 增大礼花下落距离
+        const fallDuration = 2 + Math.random() * 2; // 增加下落时间
+
+        confetti.animate([
+            { transform: 'translateY(0)' },
+            { transform: `translateY(${fallDistance}px)` }
+        ], {
+            duration: fallDuration * 1000,
+            easing: 'ease-out',
+            fill: 'forwards'
+        });
+    }
+}
+
+
+    </script>
+</body>
+</html>
+
+

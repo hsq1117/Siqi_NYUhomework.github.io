@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANGRY</title>
+    <link rel="icon" href="4.png" type="image/png">
+    
+
+    <style>
+        body {
+            margin: 0;
+    padding: 0;
+    height: 200vh; /* Set height to enable scrolling */
+    background-image: url('bg3.png'); /* Set bg3.png as background */
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+    cursor: url('Spoon.png'), auto;
+    overflow-x: hidden; /* 防止页面左右滑动 */
+        }
+
+        /* 初始时页面模糊 */
+        #content {
+      filter: blur(20px);
+      transition: filter 1.5s ease;
+      min-height: 200vh;
+      
+    }
+
+    /* 中间提示文字的样式 */
+    #overlay-text {
+      position: fixed;
+      top: 50vh;
+      left: 50vw;
+      transform: translate(-50%, -50%);
+      font-weight: 800;
+      font-size: 7vw;
+      color: white;
+      font-family: 'Lobster', cursive;
+      white-space: nowrap; /* 防止换行 */
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 8000;
+      cursor: pointer;
+      transition: opacity 1s ease;
+      
+    }
+
+    /* 鼠标悬停时添加虚线边框并放大文字 */
+    .hover-effect {
+      position: relative;
+      display: inline-block;
+      transition: transform 0.3s ease; /* 放大效果 */
+      
+    }
+
+
+.hover-effect:hover {
+transform: scale(2.2); /* 悬停时放大文字 */
+color:black;
+background-color: rgba(255, 255, 255, 0.5);
+font-family: Courier New;
+font-size:7em;
+font-style:oblique;
+font-weight:800;
+text-align:left;
+letter-spacing:-0.4em;
+text-transform:uppercase;
+text-decoration:wavy underline 0.3em white;
+border-top:.5em  #ffffff00;
+border-bottom:.5em  #00000000;
+border-radius:100%;
+list-style: square outside;
+border-radius:3% 13% 17% 39%;
+filter: blur(8px);
+
+
+}
+
+    /* 添加虚线边框的效果 */
+    .hover-effect::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -10px; /* 控制边框的位置 */
+      width: 0;
+      height: 100%;
+      border-left: 2em dotted rgb(252, 95, 60); /* 虚线边框 */
+      opacity: 0;
+      transition: opacity 0.3s ease, width 0.3s ease; /* 悬停时渐入 */
+      
+      
+    }
+
+    .hover-effect:hover::before {
+      width: 10em; /* 边框的宽度 */
+      opacity: 1; /* 使边框可见 */
+      
+    }
+
+    #hover-prompt {
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        transform: translate(-50%, -50%);
+        font-weight: 800;
+        font-size: 5vw;
+        color: white;
+        font-family: 'Lobster', cursive;
+        white-space: nowrap;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 1rem 2rem;
+        border-radius: 10vw;
+        text-align: center;
+        z-index: 8000;
+        opacity: 0; /* 初始状态为不可见 */
+        pointer-events: none; /* 禁止鼠标事件 */
+        transition: opacity 1s ease;
+    }
+
+    /* 悬停时显示提示文字 */
+    .hover-effect:hover + #hover-prompt {
+        opacity: 1; /* 悬停时显示提示文字 */
+    }
+
+
+        .trail {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    opacity: 0.7;
+    animation: fadeOut 1s ease-out forwards, colorChange 1s ease-out forwards;
+    background-color: #ffb3ba;
+    z-index: 5000;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 0.7;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes colorChange {
+    0% {
+        background-color: #6c0000;
+    }
+    25% {
+        background-color: #fb3d3d;
+    }
+    50% {
+        background-color: #b73a00;
+    }
+    75% {
+        background-color: #ffe600;
+    }
+    100% {
+        background-color: #fdff8d;
+    }
+}
+
+
+
+
+        /* 无缝滚动关键动画 */
+        @keyframes slideRightToLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+     
+
+        .sliding-text-row {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: 800;
+            animation: slideRightToLeft 10s linear infinite;
+            
+        }
+
+        /* 第一行样式 */
+        .first-line {
+            background-color: black;
+            color: white;
+            text-shadow: 
+                -2px -2px 0px rgb(191, 0, 0), /* 上左 */
+                2px -2px 0px rgb(191, 0, 0),  /* 上右 */
+                -2px 2px 0px rgb(191, 0, 0),  /* 下左 */
+                2px 2px 0px rgb(191, 0, 0);   /* 下右 */
+            padding: 10px;
+            white-space: nowrap;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; /* 使用普通圆一点的字体 */
+        }
+        
+        @keyframes slideLeftToRight {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+     
+        .sliding-text-row2 {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: 800;
+            animation: slideLeftToRight 10s linear infinite;
+        }
+
+        /* 第2行样式 */
+        .second-line {
+            background-color: rgb(99, 0, 0);
+            color: rgb(0, 0, 0);
+            text-shadow: 
+                -2px -2px 0px rgb(255, 255, 255), /* 上左 */
+                2px -2px 0px rgb(255, 255, 255),  /* 上右 */
+                -2px 2px 0px rgb(255, 255, 255),  /* 下左 */
+                2px 2px 0px rgb(255, 255, 255);   /* 下右 */
+            padding: 10px;
+            white-space: nowrap;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; /* 使用普通圆一点的字体 */
+            
+        }
+     
+        .img-4 {
+    position: absolute;
+    top: 160vh;
+    left: 25%;
+    z-index: 1000; /* 设置为最顶层 */
+    width: 200px;
+    height: auto;
+}
+
+/* 样式为粒子的容器，初始隐藏 */
+.particles-container {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    width: 200px; /* 与图片大小一致 */
+    height: 200px;
+    display: none; /* 粒子初始不可见 */
+    z-index: 1001; /* 显示在图片上 */
+}
+
+/* 粒子的样式 */
+.particles-container div {
+    position: absolute;
+    width: 25%; /* 将图片分成 4x4 的16块 */
+    height: 25%;
+    background-image: url('4.png');
+    background-size: 200px 200px; /* 和原始图片尺寸一致 */
+    transition: transform 1.5s ease-out, opacity 1.5s ease-out;
+    opacity: 1;
+}
+
+
+
+ .img-9 {
+    position: absolute;
+    top: 12vh;
+    left: 0vw;
+    z-index: 1; /* 保证图片在底层 */
+    width: 30vw;
+    height: auto;
+    animation: shake 0.5s infinite; /* 应用 shake 动画 */
+    
+}
+
+
+@keyframes shake {
+    0% { transform: translate(0px, 0px) rotate(0deg); }
+    25% { transform: translate(5px, 5px) rotate(5deg); }
+    50% { transform: translate(-5px, -5px) rotate(-5deg); }
+    75% { transform: translate(5px, -5px) rotate(5deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+.img-10 {
+    position: absolute;
+    top: 22vh;
+    left: 18vw;
+    z-index: 1;
+    width: 80vw;
+    
+}
+
+.img-11 {
+    position: absolute;
+    top: 460px;
+    left: 550px;
+    z-index: -1;
+    opacity: 0; /* 初始隐藏 */
+    transition: opacity 0.5s ease-out; /* 添加平滑过渡效果 */
+
+}
+
+.img-12 {
+    position: absolute;
+    top: 25%;
+    right: 10%;
+    z-index: -1; /* 确保图片层级合适 */
+    width: 300px; /* 自定义宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+.img-12:hover {
+    background-image: url('16.png'); /* 鼠标悬停时更换背景 */
+    background-size: cover; /* 确保背景图片覆盖整个页面 */
+    background-position: center;
+}
+
+
+.img-13 {
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    z-index: -1;
+    width: 250px; /* 自定义宽度 */
+    height: 1000px;
+}
+
+.img-14 {
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    z-index: -1;
+    width: 250px; /* 自定义宽度 */
+    height: 1000px;
+}
+
+.img-15 {
+    position: absolute;
+    top: 100vh; /* 设置垂直居中 */
+    left: 50vw; /* 设置水平居中 */
+    z-index: 1; /* 确保图片层级合适 */
+    width: 73vw; /* 自定义宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+/* 放大动画 */
+@keyframes scaleUp {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.5); }
+}
+
+/* 旋转动画 */
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 9.png 悬停时放大 */
+.img-9:hover {
+    animation: scaleUp 0.5s ease-in-out forwards;
+}
+
+/* 10.png 悬停时旋转 */
+.img-10:hover {
+    animation: rotate 0.5s ease-in-out forwards;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+
+}
+.img-5 {
+    position: absolute; /* 绝对定位，可以自由调整位置 */
+    top: 65vh; /* 调整为你想要的位置 */
+    left: 46vw; /* 调整为你想要的位置 */
+    z-index: 1000; /* 设置层级，确保在合适的层级显示 */
+    width: 16vw; /* 设置宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+
+.img-36 {
+    position: fixed; /* 固定定位 */
+    top: 100vh; /* 设置垂直居中 */
+    left: 50vw; /* 设置水平居中 */
+    transform: translate(-50%, -50%); /* 完全居中显示 */
+    z-index: 1; /* 确保层级合适 */
+    width: 73vw; /* 与15.gif相同的宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+.particles-container-5 {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    width: 200px; /* 与图片大小一致 */
+    height: 200px;
+    display: none; /* 粒子初始不可见 */
+    z-index: 1001; /* 显示在图片上 */
+}
+
+
+.img-37 {
+    position: fixed; /* 固定定位 */
+    top: 100vh; /* 设置垂直居中 */
+    left: 50vw; /* 设置水平居中 */
+    transform: translate(-50%, -50%); /* 完全居中显示 */
+    z-index: 1; /* 确保层级合适 */
+    width: 73vw; /* 与其他显示图片相同的宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+.img-6 {
+    position: absolute; /* 绝对定位 */
+    top: 130vh; /* 调整为需要的位置 */
+    left: 50vw; /* 调整为需要的位置 */
+    z-index: 1000; /* 设置层级 */
+    width: 200px; /* 设置宽度 */
+    height: auto; /* 保持比例 */
+}
+
+.particles-container-6 {
+    position: absolute;
+    top: 20vh;
+    left: 40vw;
+    width: 200vw; /* 粒子容器尺寸 */
+    height: 200vw;
+    display: none; /* 初始隐藏 */
+    z-index: 1001; /* 显示在图片上 */
+}
+
+
+.img-39 {
+    position: fixed; /* 固定定位 */
+    top: 100vh; /* 设置垂直居中 */
+    left: 50vw; /* 设置水平居中 */
+    transform: translate(-50%, -50%); /* 完全居中显示 */
+    z-index: 1; /* 确保层级合适 */
+    width: 73vw; /* 与其他显示图片相同的宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+.img-7 {
+    position: absolute; /* 绝对定位 */
+    top: 88vh; /* 调整为需要的位置 */
+    left: 75vw; /* 调整为需要的位置 */
+    z-index: 1000; /* 设置层级 */
+    width: 18vw; /* 设置宽度 */
+    height: auto; /* 保持比例 */
+}
+
+.particles-container-7 {
+    position: absolute;
+    top: 20vh;
+    left: 40vw;
+    width: 20vw; /* 粒子容器尺寸 */
+    height: 20vh;
+    display: none; /* 初始隐藏 */
+    z-index: 1001; /* 显示在图片上 */
+}
+
+
+.img-38 {
+    position: fixed; /* 固定定位 */
+    top: 100vh; /* 设置垂直居中 */
+    left: 50vw; /* 设置水平居中 */
+    transform: translate(-50%, -50%); /* 完全居中显示 */
+    z-index: 1; /* 确保层级合适 */
+    width: 73vw; /* 与其他显示图片相同的宽度 */
+    height: auto; /* 保持图片比例 */
+}
+
+.img-8 {
+    position: absolute; /* 绝对定位 */
+    top: 200vh; /* 调整为需要的位置 */
+    left: 55vw; /* 设置水平居中 */
+    z-index: 1000; /* 设置层级 */
+    width: 15vw; /* 设置宽度 */
+    height: auto; /* 保持比例 */
+}
+
+.particles-container-8 {
+    position: absolute;
+    top: 20vh;
+    left: 40vw;
+    width: 20vw; /* 粒子容器尺寸 */
+    height: 20vh;
+    display: none; /* 初始隐藏 */
+    z-index: 1001; /* 显示在图片上 */
+}
+
+
+@keyframes swing {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-15deg); }
+    100% { transform: rotate(0deg); }
+}
+.img-4, .img-5, .img-6, .img-7, .img-8 {
+    position: absolute;
+    z-index: 1000; /* Ensure images are on top */
+    transform-origin: center 80%; /* Swing animation pivot point */
+    animation: swing 2s infinite ease-in-out; 
+}
+
+.img-40 {
+    position: fixed; /* 保证图片固定在页面的左下角 */
+    bottom: -40vh; /* 距离页面底部的距离，可以根据需要调整 */
+    left: 2vw; /* 距离页面左边的距离，可以根据需要调整 */
+    width: 20vw; /* 设置图片的宽度，可以根据需要调整 */
+    z-index: 1000; /* 确保图片在前端显示 */
+    cursor: pointer; /* 鼠标悬停时显示为手势 */
+    transition: transform 0.3s ease; /* 添加轻微的缩放效果 */
+}
+
+.img-40:hover {
+    transform: scale(1.1); /* 悬停时略微放大 */
+}
+
+
+
+
+    </style>
+
+    
+</head>
+<body>
+    <div id="content">
+    <!-- 第一行文本：从右到左滑动 -->
+    <div class="sliding-text first-line">
+        <div class="sliding-text-wrapper">
+            <div class="sliding-text-row">
+                Please calm down&nbsp;&nbsp;&nbsp;Please calm down&nbsp;&nbsp;&nbsp;Please calm down&nbsp;&nbsp;&nbsp;Please calm down
+                &nbsp;&nbsp;&nbsp;Please calm down&nbsp;&nbsp;&nbsp;Please calm down
+            </div>
+            <div class="sliding-text-row">
+                Please calm down&nbsp;&nbsp;&nbsp;Please calm down&nbsp;&nbsp;&nbsp;Please calm down&nbsp;&nbsp;&nbsp;Please calm down
+                &nbsp;&nbsp;&nbsp;Please calm down&nbsp;&nbsp;&nbsp;Please calm down
+            </div>
+        </div>
+    </div>
+    <!-- 第2行文本：从右到左滑动 -->
+    <div class="sliding-text2 second-line">
+        <div class="sliding-text-wrapper2">
+            <div class="sliding-text-row2">
+                Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry
+                &nbsp;&nbsp;&nbsp;Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry
+            </div>
+            <div class="sliding-text-row2">
+                Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry
+                &nbsp;&nbsp;&nbsp;Don't be angry&nbsp;&nbsp;&nbsp;Don't be angry
+            </div>
+        </div>
+    </div>
+
+
+ <img src="9.png" class="img-9" id="img-9" alt="9">
+<img src="10.png" class="img-10" alt="10">
+<img src="11.png" class="img-11" alt="11">
+
+<img src="12.gif" class="img-12" alt="12">
+<img src="13.gif" class="img-13" alt="13">
+<img src="14.gif" class="img-14" alt="14">
+<img src="15.gif" class="img-15" alt="15" style="display: none;">
+
+
+<audio id="screamSound" src="scream.mp3" preload="auto"></audio>
+<audio id="chewingSound" src="chewing2.mp3" preload="auto"></audio>
+
+
+
+<img src="4.png" class="img-4" id="img-4" alt="4">
+<div class="particles-container" id="particles-container"></div>
+
+<img src="5.png" class="img-5" id="img-5" alt="5">
+<img src="36.gif" class="img-36" alt="36" style="display: none;">
+<div class="particles-container" id="particles-container-5"></div>
+
+<img src="6.png" class="img-6" id="img-6" alt="6">
+<img src="37.gif" class="img-37" alt="37" style="display: none;">
+<div class="particles-container" id="particles-container-6"></div>
+
+<img src="7.png" class="img-7" id="img-7" alt="7">
+<img src="39.gif" class="img-39" alt="39" style="display: none;">
+<div class="particles-container" id="particles-container-7"></div>
+
+<img src="8.png" class="img-8" id="img-8" alt="8">
+<img src="38.gif" class="img-38" alt="38" style="display: none;">
+<div class="particles-container" id="particles-container-8"></div>
+
+<a href="HomePage.html">
+    <img src="40.png" class="img-40" alt="Go to Home Page">
+</a>
+
+
+</div>
+
+ <!-- 添加提示文字 -->
+ <div id="overlay-text" class="hover-effect">Don't let it control your life.</div>
+ <span id="hover-prompt" class="hover-effect">Click away your anger, release and let it go!</span> <!-- 新增的提示文字 -->
+</div>  
+
+
+
+
+    <script>
+
+       // 获取 content 和 overlay-text 元素
+       const content = document.getElementById('content');
+        const overlayText = document.getElementById('overlay-text');
+        const hoverPrompt = document.getElementById('hover-prompt');
+
+        // 为 overlayText 添加点击事件，移除模糊效果和自身
+        overlayText.addEventListener('click', () => {
+            content.style.filter = 'blur(0px)'; // 移除模糊效果
+            overlayText.style.opacity = '0'; // 渐隐提示文字
+            setTimeout(() => {
+                overlayText.style.display = 'none'; // 隐藏提示文字
+            }, 1000); // 等待1秒后隐藏
+        });
+
+   // 为 hover-effect 添加悬停效果，显示提示文字
+   overlayText.addEventListener('mouseenter', () => {
+        hoverPrompt.style.opacity = '1'; // 显示“Drag, Match, and Eat!”
+    });
+
+    overlayText.addEventListener('mouseleave', () => {
+        hoverPrompt.style.opacity = '0'; // 隐藏“Drag, Match, and Eat!”
+    });
+
+
+
+
+        // 光标拖尾效果
+        document.addEventListener("mousemove", function(e) {
+    var body = document.querySelector("body");
+    var trail = document.createElement("div");
+
+    // 设置 trail 的样式
+    trail.className = "trail"; // 使用预定义的 CSS 样式
+    trail.style.left = e.pageX + "px";
+    trail.style.top = e.pageY + "px";
+
+    // 将 trail 添加到 body
+    body.appendChild(trail);
+
+    // 设置定时器，在 1 秒后移除 trail
+    setTimeout(function() {
+        trail.remove();
+    }, 1000); // 控制拖尾持续时间
+});
+        
+
+
+ // 获取 scream 音频元素
+ const screamSound = document.getElementById('screamSound');
+    
+    // 给 e5 添加点击事件监听
+    document.getElementById('img-9').addEventListener('click', function(event) {
+        
+        // 播放音效
+        screamSound.currentTime = 0; // 确保从头开始播放
+        screamSound.play();
+        
+
+    });
+// 定义播放音频的函数
+function playScreamSound() {
+    screamSound.currentTime = 0; // 确保音频从头开始播放
+    screamSound.play();
+
+    setTimeout(() => {
+        screamSound.pause(); // 1 秒后停止播放
+    }, 2000); // 播放持续时间为 1 秒
+}
+
+// 监听整个页面的鼠标按下事件
+document.addEventListener('mousedown', playScreamSound);
+
+    document.addEventListener("scroll", function() {
+    var img11 = document.querySelector(".img-11");
+    
+    // 获取滚动的高度
+    var scrollPosition = window.scrollY;
+    
+    // 计算透明度的变化，最大为1，最小为0
+    var opacityValue = Math.min(scrollPosition / 400, 1); // 400 可以根据需要调整
+    img11.style.opacity = opacityValue;
+});
+
+
+let clickCount = 0;
+const chewingSound = document.getElementById('chewingSound'); // 获取 chewing2.mp3 音频元素
+const img15 = document.querySelector('.img-15'); // 获取 15.gif 元素
+
+document.getElementById('img-4').addEventListener('click', function() {
+    clickCount++;
+
+    if (clickCount >= 10) { // 点击次数为10时触发
+        // 播放音效，并限制为5秒
+        chewingSound.currentTime = 0;
+        chewingSound.play();
+        
+        setTimeout(() => {
+            chewingSound.pause(); // 5秒后停止音频
+        }, 5000); // 设置播放5秒的时间限制
+
+        // 生成粒子并在当前位置散开
+        createParticles(this); // 传递当前图片的引用
+
+        //显示 15.gif 并在4秒后隐藏
+        img15.style.display = 'block'; // 显示 15.gif
+        img15.style.position = 'fixed'; // 固定定位
+        img15.style.top = '50%'; // 设置垂直居中
+        img15.style.left = '50%'; // 设置水平居中
+        img15.style.transform = 'translate(-50%, -50%)'; // 完全居中显示
+        
+        
+        setTimeout(() => {
+            img15.style.display = 'none'; // 4秒后隐藏
+        }, 4000); // 设置显示 4 秒后隐藏
+
+        // **保持图片位置不变，暂时隐藏**
+        this.style.visibility = 'hidden'; // 隐藏图片但不改变位置
+        clickCount = 0; // 重置点击次数
+
+        // **粒子分散后再设置新位置**
+        setTimeout(() => {
+            randomPosition(this); // 在粒子消失后设置新位置
+            this.style.visibility = 'visible'; // 显示图片，但在新位置
+        }, 4000); // 粒子分散后4秒重新显示图片
+    }
+});
+
+// 生成粒子效果，接收图片作为参数
+function createParticles(imgElement) {
+    const container = document.getElementById('particles-container');
+    
+    // 设置粒子容器的位置为图片当前位置
+    const imgRect = imgElement.getBoundingClientRect(); // 获取图片的当前位置
+    container.style.top = `${imgRect.top}px`;
+    container.style.left = `${imgRect.left}px`;
+    container.style.width = `${imgRect.width}px`;
+    container.style.height = `${imgRect.height}px`;
+    
+    container.style.display = 'block'; // 显示粒子容器
+    container.innerHTML = ''; // 清空容器中的粒子（如果有）
+
+    // 创建 4x4 的粒子块
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.top = `${i * 25}%`; // 计算粒子块的位置
+            particle.style.left = `${j * 25}%`;
+            particle.style.width = '25%';
+            particle.style.height = '25%';
+            particle.style.backgroundPosition = `${-j * (imgRect.width / 4)}px ${-i * (imgRect.height / 4)}px`; // 设置背景位置
+            particle.style.backgroundSize = `${imgRect.width}px ${imgRect.height}px`; // 背景尺寸与图片一致
+            particle.style.backgroundImage = `url('${imgElement.src}')`; // 使用图片作为粒子的背景
+
+            container.appendChild(particle);
+
+            // 随机的散开效果
+            const randomX = (Math.random() - 0.5) * 1000;
+            const randomY = (Math.random() - 0.5) * 1000;
+            const randomRotate = Math.random() * 360;
+
+            setTimeout(() => {
+                particle.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+                particle.style.opacity = 1; // 粒子散开
+            }, 500); // 动画延迟
+        }
+    }
+
+    // 粒子消失后，清除容器内容
+    setTimeout(() => {
+        container.style.display = 'none'; // 隐藏粒子容器
+        container.innerHTML = ''; // 清空粒子
+    }, 4000); // 粒子动画持续4秒
+}
+
+// 随机设置图片的位置（包含滚动高度）
+function randomPosition(element) {
+    const viewHeight = window.innerHeight; // 可视区域的高度
+    const viewWidth = window.innerWidth;   // 可视区域的宽度
+    const scrollY = window.scrollY; // 当前页面的滚动高度
+
+    // 随机生成 top 和 left 值，考虑页面滚动的高度，限制在整个背景图片的范围内
+    const randomTop = scrollY + (Math.random() * viewHeight);  // 随机 top 位置，包含可视区域和滚动后的区域
+    const randomLeft = Math.random() * viewWidth;  // 限制在可视区域宽度内
+
+    // 设置图片的新位置
+    element.style.top = randomTop + 'px';
+    element.style.left = randomLeft + 'px';
+}
+
+
+//5.png
+let clickCount5 = 0;
+const img36 = document.querySelector('.img-36'); // 获取 36.gif 元素
+
+document.getElementById('img-5').addEventListener('click', function () {
+    clickCount5++;
+
+    if (clickCount5 >= 10) { // 点击次数为10时触发
+        // 使用已有的 chewingSound 播放音效
+        chewingSound.currentTime = 0; // 确保从头开始播放
+        chewingSound.play();
+        
+        setTimeout(() => {
+            chewingSound.pause(); // 5秒后停止音频
+        }, 5000); // 设置播放5秒的时间限制
+         
+        // 生成粒子并在当前位置散开
+        createParticles5(this); // 传递当前图片的引用
+
+        // 显示 36.gif 并在4秒后隐藏
+        img36.style.display = 'block';
+
+        setTimeout(() => {
+            img36.style.display = 'none'; // 4秒后隐藏
+        }, 4000);
+
+        // **保持图片位置不变，暂时隐藏**
+        this.style.visibility = 'hidden'; // 隐藏图片但不改变位置
+        clickCount5 = 0; // 重置点击次数
+
+        // **粒子分散后再设置新位置**
+        setTimeout(() => {
+            randomPosition(this); // 在粒子消失后设置新位置
+            this.style.visibility = 'visible'; // 显示图片，但在新位置
+        }, 4000); // 粒子分散后4秒重新显示图片
+    }
+});
+
+// 生成粒子效果，接收图片作为参数
+function createParticles5(imgElement) {
+const container5 = document.getElementById('particles-container-5');
+
+    // 设置粒子容器的位置为图片当前位置
+    const imgRect = imgElement.getBoundingClientRect();
+    container5.style.top = `${imgRect.top}px`;
+    container5.style.left = `${imgRect.left}px`;
+    container5.style.width = `${imgRect.width}px`;
+    container5.style.height = `${imgRect.height}px`;
+
+    container5.style.display = 'block';
+    container5.innerHTML = '';
+
+
+// 创建 4x4 的粒子块
+for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.top = `${i * 25}%`;
+        particle.style.left = `${j * 25}%`;
+        particle.style.width = '0'; // 设置宽度为0
+        particle.style.height = '0'; // 设置高度为0
+
+
+  // 设置较大的橘色三角形样式，使用 vw 单位
+  particle.style.borderLeft = '3vw solid transparent'; // 左侧透明边
+        particle.style.borderRight = '3vw solid transparent'; // 右侧透明边
+        particle.style.borderBottom = '5vw solid orange'; // 底部橘色边，形成较大的三角形
+    particle.style.borderBottom = '25px solid orange'; // 底部橘色边，形成三角形
+
+        container5.appendChild(particle);
+
+        // 随机的散开效果
+        const randomX = (Math.random() - 0.5) * 1000;
+        const randomY = (Math.random() - 0.5) * 1000;
+        const randomRotate = Math.random() * 360;
+
+        setTimeout(() => {
+            particle.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+            particle.style.opacity = 0; // 设置透明度为0，模拟散开效果
+        }, 10);
+    }
+}
+
+setTimeout(() => {
+    container5.style.display = 'none';
+    container5.innerHTML = '';
+}, 4000);
+
+}
+
+//6
+
+let clickCount6 = 0;
+const img37 = document.querySelector('.img-37'); // 获取 37.png 元素
+
+document.getElementById('img-6').addEventListener('click', function () {
+    clickCount6++;
+
+    if (clickCount6 >= 10) { // 点击次数为10时触发
+        // 使用 chewingSound 播放音效
+        chewingSound.currentTime = 0; // 确保从头开始播放
+        chewingSound.play();
+
+        setTimeout(() => {
+            chewingSound.pause(); // 5秒后停止音频
+        }, 5000); // 设置播放5秒的时间限制
+
+        // 生成粒子并在当前位置散开
+        createParticles6(this); // 传递当前图片的引用
+
+        // 显示 37.png 并在4秒后隐藏
+        img37.style.display = 'block';
+
+        setTimeout(() => {
+            img37.style.display = 'none'; // 4秒后隐藏
+        }, 4000);
+
+        // **保持图片位置不变，暂时隐藏**
+        this.style.visibility = 'hidden'; // 隐藏图片但不改变位置
+        clickCount6 = 0; // 重置点击次数
+
+        // **粒子分散后再设置新位置**
+        setTimeout(() => {
+            randomPosition(this); // 在粒子消失后设置新位置
+            this.style.visibility = 'visible'; // 显示图片，但在新位置
+        }, 4000); // 粒子分散后4秒重新显示图片
+    }
+});
+
+// 生成粒子效果，接收图片作为参数
+function createParticles6(imgElement) {
+    const container6 = document.getElementById('particles-container-6');
+
+    // 设置粒子容器的位置为图片当前位置
+    const imgRect = imgElement.getBoundingClientRect();
+    container6.style.top = `${imgRect.top}px`;
+    container6.style.left = `${imgRect.left}px`;
+    container6.style.width = `${imgRect.width}px`;
+    container6.style.height = `${imgRect.height}px`;
+
+    container6.style.display = 'block';
+    container6.innerHTML = '';
+
+    // 创建 4x4 的粒子块
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.top = `${i * 25}%`;
+            particle.style.left = `${j * 25}%`;
+            particle.style.width = '4vw'; // 设置粒子的宽度为 4vw
+        particle.style.height = '3vw'; // 设置粒子的高度为 2vw
+
+        // 设置更粗的深红色波浪线样式
+        particle.style.background = `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="20"><path d="M 0 10 Q 12.5 0 25 10 T 50 10" fill="none" stroke="darkred" stroke-width="10"/></svg>') repeat-x`;
+        particle.style.backgroundSize = '10px 20px'; // 调整波浪线的大小
+
+            container6.appendChild(particle);
+
+            // 随机的散开效果
+            const randomX = (Math.random() - 0.5) * 1000;
+            const randomY = (Math.random() - 0.5) * 1000;
+            const randomRotate = Math.random() * 360;
+
+            setTimeout(() => {
+                particle.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
+                particle.style.opacity = 1; // 设置透明度为0，模拟散开效果
+            }, 10);
+        }
+    }
+
+    setTimeout(() => {
+        container6.style.display = 'none';
+        container6.innerHTML = '';
+    }, 4000);
+}
+
+//7//
+let clickCount7 = 0;
+const img39 = document.querySelector('.img-39'); // 获取 39.gif 元素
+
+document.getElementById('img-7').addEventListener('click', function () {
+    clickCount7++;
+
+    if (clickCount7 >= 10) { // 点击次数为10时触发
+        // 使用 chewingSound 播放音效
+        chewingSound.currentTime = 0; // 确保从头开始播放
+        chewingSound.play();
+
+        setTimeout(() => {
+            chewingSound.pause(); // 5秒后停止音频
+        }, 5000); // 设置播放5秒的时间限制
+
+        // 生成粒子并在当前位置散开
+        createParticles7(this); // 传递当前图片的引用
+
+        // 显示 39.gif 并在4秒后隐藏
+        img39.style.display = 'block';
+
+        setTimeout(() => {
+            img39.style.display = 'none'; // 4秒后隐藏
+        }, 4000);
+
+        // **保持图片位置不变，暂时隐藏**
+        this.style.visibility = 'hidden'; // 隐藏图片但不改变位置
+        clickCount7 = 0; // 重置点击次数
+
+        // **粒子分散后再设置新位置**
+        setTimeout(() => {
+            randomPosition(this); // 在粒子消失后设置新位置
+            this.style.visibility = 'visible'; // 显示图片，但在新位置
+        }, 4000); // 粒子分散后4秒重新显示图片
+    }
+});
+
+// 生成粒子效果，接收图片作为参数
+function createParticles7(imgElement) {
+    const container7 = document.getElementById('particles-container-7');
+
+    // 设置粒子容器的位置为图片当前位置
+    const imgRect = imgElement.getBoundingClientRect();
+    container7.style.top = `${imgRect.top}px`;
+    container7.style.left = `${imgRect.left}px`;
+    container7.style.width = `${imgRect.width}px`;
+    container7.style.height = `${imgRect.height}px`;
+
+    container7.style.display = 'block';
+    container7.innerHTML = '';
+
+    // 创建 4x4 的粒子块
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.top = `${i * 25}%`; // 计算粒子块的位置
+            particle.style.left = `${j * 25}%`;
+            particle.style.width = '25%';
+            particle.style.height = '25%';
+            particle.style.backgroundPosition = `${-j * (imgRect.width / 4)}px ${-i * (imgRect.height / 4)}px`; // 设置背景位置
+            particle.style.backgroundSize = `${imgRect.width}px ${imgRect.height}px`; // 背景尺寸与图片一致
+            particle.style.backgroundImage = `url('${imgElement.src}')`; // 使用图片作为粒子的背景
+
+            container7.appendChild(particle);
+
+            // 随机的散开效果
+            const randomX = (Math.random() - 0.5) * 100;
+            const randomY = (Math.random() - 0.5) * 100;
+            const randomRotate = Math.random() * 360;
+
+            setTimeout(() => {
+                particle.style.transform = `translate(${randomX}vw, ${randomY}vh) rotate(${randomRotate}deg)`;
+                particle.style.opacity = 0; // 设置透明度为0，模拟散开效果
+            }, 10);
+        }
+    }
+
+    setTimeout(() => {
+        container7.style.display = 'none';
+        container7.innerHTML = '';
+    }, 4000);
+}
+
+//8//
+let clickCount8 = 0;
+const img38 = document.querySelector('.img-38'); // 获取 38.gif 元素
+
+document.getElementById('img-8').addEventListener('click', function () {
+    clickCount8++;
+
+    if (clickCount8 >= 10) { // 点击次数为10时触发
+        // 使用 chewingSound 播放音效
+        chewingSound.currentTime = 0; // 确保从头开始播放
+        chewingSound.play();
+
+        setTimeout(() => {
+            chewingSound.pause(); // 5秒后停止音频
+        }, 5000); // 设置播放5秒的时间限制
+
+        // 生成粒子并在当前位置散开
+        createParticles8(this); // 传递当前图片的引用
+
+        // 显示 38.gif 并在4秒后隐藏
+        img38.style.display = 'block';
+
+        setTimeout(() => {
+            img38.style.display = 'none'; // 4秒后隐藏
+        }, 4000);
+
+        // **保持图片位置不变，暂时隐藏**
+        this.style.visibility = 'hidden'; // 隐藏图片但不改变位置
+        clickCount8 = 0; // 重置点击次数
+
+        // **粒子分散后再设置新位置**
+        setTimeout(() => {
+            randomPosition(this); // 在粒子消失后设置新位置
+            this.style.visibility = 'visible'; // 显示图片，但在新位置
+        }, 4000); // 粒子分散后4秒重新显示图片
+    }
+});
+
+// 生成粒子效果，接收图片作为参数
+function createParticles8(imgElement) {
+    const container8 = document.getElementById('particles-container-8');
+
+    // 设置粒子容器的位置为图片当前位置
+    const imgRect = imgElement.getBoundingClientRect();
+    container8.style.top = `${imgRect.top}px`;
+    container8.style.left = `${imgRect.left}px`;
+    container8.style.width = `${imgRect.width}px`;
+    container8.style.height = `${imgRect.height}px`;
+
+    container8.style.display = 'block';
+    container8.innerHTML = '';
+
+// 创建 4x4 的粒子块
+for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.top = `${i * 25}%`;
+        particle.style.left = `${j * 25}%`;
+        particle.style.width = '5vw'; // 设置粒子的宽度为 5vw
+        particle.style.height = '5vw'; // 设置粒子的高度为 5vw
+
+        // 设置正方形粒子的红色到橘色渐变效果
+        particle.style.background = 'linear-gradient(45deg, red, orange)'; // 设置为红色到橘色的渐变效果
+        particle.style.borderRadius = '0'; // 保持正方形形状
+
+        container8.appendChild(particle);
+
+        // 随机的散开效果
+        const randomX = (Math.random() - 0.5) * 100;
+        const randomY = (Math.random() - 0.5) * 100;
+        const randomRotate = Math.random() * 360;
+
+        setTimeout(() => {
+            particle.style.transform = `translate(${randomX}vw, ${randomY}vh) rotate(${randomRotate}deg)`;
+            particle.style.opacity = 0; // 设置透明度为0，模拟散开效果
+        }, 10);
+    }
+}
+
+setTimeout(() => {
+    container8.style.display = 'none';
+    container8.innerHTML = '';
+}, 4000);
+
+}
+
+    </script>
+</body>
+</html>
+

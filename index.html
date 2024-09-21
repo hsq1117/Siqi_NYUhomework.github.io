@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First HTML</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            cursor: url('gummy.png'), auto; /* 使用gummy.png作为光标 */
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        #smiley {
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: filter 0.3s ease;
+            z-index: 2;
+        }
+
+        #smiley:hover {
+            filter: invert(100%);
+            cursor: pointer;
+        }
+
+        #letters {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: none; /* 隐藏字母图像 */
+            justify-content: center;
+            align-items: center;
+            gap: 5px; /* 缩小字母间距 */
+            padding-bottom: 10px;
+            z-index: 1;
+            transform: translateY(-20px); /* 整体向上移动 */
+        }
+
+        #letters img {
+            width: 120px; /* 调整字母大小 */
+            height: auto;
+            position: relative;
+            animation: bounce 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-10px);
+            }
+        
+        }
+
+
+        #hru {
+    position: fixed;
+    top: 45px;  /* 调整到页面左上角 */
+    left: 60px; /* 调整到页面左上角 */
+    width: 0;
+    height: 0;
+    opacity: 0;
+    z-index: 3; /* 确保在背景视频之上 */
+    transition: width 1s ease, height 1s ease, opacity 1.5s ease;
+    animation: wave 2s infinite ease-in-out;
+}
+
+@keyframes wave {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+
+
+    </style>
+</head>
+<body>
+    <video id="bg-video" autoplay>
+        <source src="video1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <img id="hru" src="HRU.png" alt="HRU Image">
+    <img id="smiley" src="Smiley.png" alt="Smiley Face">
+
+    <div id="letters">
+        <img id="letter1" src="Letter E.png" alt="Letter E">
+        <img id="letter2" src="Letter N.png" alt="Letter N">
+        <img id="letter3" src="Letter T.png" alt="Letter T">
+        <img id="letter4" src="Letter E2.png" alt="Letter E2">
+        <img id="letter5" src="Letter R.png" alt="Letter R">
+      
+
+    </div>
+
+
+    <script>
+
+        window.addEventListener('load', () => {
+            const video = document.getElementById('bg-video');
+            video.muted = true; // 确保视频静音
+            video.play();
+        });
+        // 停止视频在播放一遍后
+        const video = document.getElementById('bg-video');
+        video.addEventListener('ended', () => {
+            video.pause();
+            showSmiley();
+        });
+
+        // 显示并摇摆图片
+        function showSmiley() {
+            const smiley = document.getElementById('smiley');
+            smiley.style.width = '700px';
+            smiley.style.height = '700px';
+            smiley.style.opacity = '1';
+
+            let pos = 0;
+            let direction = 1;
+
+            function sway() {
+                pos += direction * 0.5; // 调整摇摆速度，降低到 0.5
+                smiley.style.transform = `translate(-50%, -50%) rotate(${pos}deg)`;
+                if (pos >= 20 || pos <= -20) {
+                    direction *= -1;
+                }
+                requestAnimationFrame(sway);
+            }
+
+            sway();
+        }
+
+        // 点击smiley跳转到新页面
+        const smiley = document.getElementById('smiley');
+        const letters = document.getElementById('letters');
+
+        smiley.addEventListener('click', () => {
+            window.location.href = 'Emotional Eating_Siqi.html';
+        });
+
+        // 鼠标悬停显示字母图像
+        smiley.addEventListener('mouseenter', () => {
+            letters.style.display = 'flex';
+
+            // 添加倾斜和跳动效果
+            document.getElementById('letter1').style.transform = 'rotate(-10deg)';
+            document.getElementById('letter1').style.animationDuration = '1.5s';
+            
+            document.getElementById('letter2').style.transform = 'rotate(5deg)';
+            document.getElementById('letter2').style.animationDuration = '2s';
+            
+            document.getElementById('letter3').style.transform = 'rotate(-15deg)';
+            document.getElementById('letter3').style.animationDuration = '1.8s';
+            
+            document.getElementById('letter4').style.transform = 'rotate(10deg)';
+            document.getElementById('letter4').style.animationDuration = '2.2s';
+            
+            document.getElementById('letter5').style.transform = 'rotate(-5deg)';
+            document.getElementById('letter5').style.animationDuration = '1.6s';
+        });
+
+        // 鼠标移开隐藏字母图像
+        smiley.addEventListener('mouseleave', () => {
+            letters.style.display = 'none';
+        });
+
+        // 背景和笑脸互动
+        const bgVideo = document.getElementById('bg-video');
+
+        document.addEventListener('mousemove', (e) => {
+            // 获取鼠标在页面上的位置
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // 计算鼠标相对于窗口中心的位置偏移
+            const offsetX = (mouseX - window.innerWidth / 2) / 30;
+            const offsetY = (mouseY - window.innerHeight / 2) / 30;
+
+            // 设置背景的平移
+            bgVideo.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+            // 设置笑脸的平移
+            smiley.style.transform = `translate(${offsetX * 2}px, ${offsetY * 2}px) rotate(${offsetX * 0.5}deg)`;
+        });
+
+        function showSmiley() {
+    const smiley = document.getElementById('smiley');
+    const hru = document.getElementById('hru');
+
+    // 逐渐显现笑脸图片
+    smiley.style.width = '700px';
+    smiley.style.height = '700px';
+    smiley.style.opacity = '1';
+
+    // 逐渐显现HRU图片
+    hru.style.width = '450px';  // 设置 HRU.png 的期望大小
+    hru.style.height = '450px'; // 设置 HRU.png 的期望大小
+    hru.style.opacity = '1';
+
+    let pos = 0;
+    let direction = 1;
+
+    function sway() {
+        pos += direction * 0.5; // 调整摇摆速度
+        smiley.style.transform = `translate(-50%, -50%) rotate(${pos}deg)`;
+        if (pos >= 20 || pos <= -20) {
+            direction *= -1;
+        }
+        requestAnimationFrame(sway);
+    }
+
+    sway();
+}
+
+    </script>
+</body>
+</html>
