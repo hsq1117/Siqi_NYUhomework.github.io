@@ -8,10 +8,11 @@
     <link rel="icon" href="mouth.png" type="image/png">
 
     
+    
     <style>
         #glitchVideo, #eraserCanvas, #typingText {
     display:; /* 隐藏视频、擦除效果和打字效果文字 */
-} 
+}
 
 
        
@@ -436,6 +437,12 @@ body {
 <!-- 句子容器 -->
 <div id="randomQuote" style="position: fixed; top: -10%; left: 50%; transform: translateX(-50%); font-size: 2rem; color: white; font-weight: bold; z-index: 2001; display: none; transition: top 2s ease-in-out;"></div>
 
+<!-- 调试按钮：刷新并重置 intro 动画（仅开发时使用） -->
+<button onclick="sessionStorage.removeItem('hasPlayedGlitch'); location.reload();"
+    style="position:fixed; bottom:10px; right:10px; padding:10px 15px; z-index:9999; background:#222; color:#fff; border:none; border-radius:5px; font-size:14px; cursor:pointer;">
+⚠️
+</button>
+
 
     <script>
 document.addEventListener("mousemove", function(e) {
@@ -461,11 +468,23 @@ const glitchVideo = document.getElementById('glitchVideo');
 const typingText = document.getElementById('typingText');
 const canvas = document.getElementById('eraserCanvas');
 const ctx = canvas.getContext('2d');
+const hasPlayed = sessionStorage.getItem('hasPlayedGlitch');
 
-// 视频播放时显示打字效果
-glitchVideo.addEventListener('play', () => {
-    showTypingEffect();
-});
+
+if (!hasPlayed) {
+    // 第一次访问，播放视频并执行打字和擦除效果
+    glitchVideo.style.display = 'block';
+    glitchVideo.addEventListener('play', () => {
+        showTypingEffect();
+    });
+} else {
+    // 非首次访问，跳过视频和擦除特效
+    glitchVideo.style.display = 'none';
+    typingText.style.display = 'none';
+    canvas.style.display = 'none';
+    document.querySelector('body').style.cursor = 'auto'; // 恢复默认光标
+}
+
 
 // 打字效果
 function showTypingEffect() {
@@ -484,6 +503,7 @@ function showTypingEffect() {
             glitchVideo.addEventListener('ended', () => {
                 glitchVideo.style.display = 'none'; // 隐藏视频
                 typingText.style.opacity = 0; // 隐藏文字
+                sessionStorage.setItem('hasPlayedGlitch', 'true');
                 startEraser(); // 开始擦除功能
             });
         }
